@@ -1,0 +1,33 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#FBFAF6"/>
+  <path d="M0 506H1200V630H0V506Z" fill="#17211D"/>
+  <path d="M0 0H1200V630H0V0Z" fill="url(#grid)" opacity="0.32"/>
+  <rect x="82" y="82" width="104" height="104" rx="18" fill="#17211D"/>
+  <text x="134" y="151" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="58" font-weight="800" fill="#FBFAF6">A</text>
+  <text x="82" y="250" font-family="Inter, Arial, sans-serif" font-size="74" font-weight="850" fill="#17211D">AI Atomic Feature</text>
+  <text x="82" y="335" font-family="Inter, Arial, sans-serif" font-size="74" font-weight="850" fill="#17211D">Architecture</text>
+  <text x="86" y="407" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="500" fill="#5F6F68">Build software as isolated, AI-implementable features.</text>
+  <g transform="translate(720 116)">
+    <rect x="0" y="146" width="134" height="76" rx="12" fill="#FFFFFF" stroke="#DBE5DE" stroke-width="2"/>
+    <text x="67" y="193" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#17211D">Ticket</text>
+    <rect x="186" y="40" width="134" height="76" rx="12" fill="#FFFFFF" stroke="#DBE5DE" stroke-width="2"/>
+    <text x="253" y="87" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#17211D">Context</text>
+    <rect x="238" y="172" width="168" height="98" rx="14" fill="#17211D"/>
+    <text x="322" y="230" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="850" fill="#FBFAF6">Feature</text>
+    <rect x="454" y="56" width="134" height="76" rx="12" fill="#FFFFFF" stroke="#DBE5DE" stroke-width="2"/>
+    <text x="521" y="103" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#17211D">Runtime</text>
+    <rect x="470" y="238" width="134" height="76" rx="12" fill="#FFFFFF" stroke="#DBE5DE" stroke-width="2"/>
+    <text x="537" y="285" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#17211D">Tests</text>
+    <path d="M134 176L239 113" stroke="#27B894" stroke-width="8" stroke-linecap="round"/>
+    <path d="M300 116L328 172" stroke="#F26B5B" stroke-width="8" stroke-linecap="round"/>
+    <path d="M405 197L477 132" stroke="#27B894" stroke-width="8" stroke-linecap="round"/>
+    <path d="M406 232L470 260" stroke="#E3AB2F" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <text x="84" y="577" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800" fill="#D9F2EA">github.com/AdrianBesleaga/AIFA</text>
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" stroke="#137C8B" stroke-width="1"/>
+    </pattern>
+  </defs>
+</svg>
+

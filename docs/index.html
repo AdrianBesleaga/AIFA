@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Atomic Feature Architecture</title>
+    <meta
+      name="description"
+      content="An architecture for building software as small, isolated, AI-implementable features with explicit contracts and runtime-provided capabilities."
+    />
+    <meta property="og:title" content="AI Atomic Feature Architecture" />
+    <meta
+      property="og:description"
+      content="Build software as atomic features that AI agents can implement without full project context."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://adrianbesleaga.github.io/AIFA/" />
+    <meta property="og:image" content="https://adrianbesleaga.github.io/AIFA/social-card.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AI Atomic Feature Architecture" />
+    <meta
+      name="twitter:description"
+      content="AIFA turns feature work into explicit contracts: input, output, capabilities, rules, and behavioral tests."
+    />
+    <meta name="twitter:image" content="https://adrianbesleaga.github.io/AIFA/social-card.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="AI Atomic Feature Architecture home">
+        <span class="brand-mark">A</span>
+        <span>AIFA</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#model">Model</a>
+        <a href="#contract">Contract</a>
+        <a href="#poc">PoC</a>
+        <a class="nav-cta" href="https://github.com/AdrianBesleaga/AIFA">GitHub</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-scene" aria-hidden="true">
+          <canvas id="aifa-canvas"></canvas>
+          <div class="scanline"></div>
+          <div class="system-map">
+            <div class="system-node system-ticket">Ticket Contract</div>
+            <div class="system-node system-context">Context</div>
+            <div class="system-node system-feature">Atomic Feature</div>
+            <div class="system-node system-runtime">Runtime</div>
+            <div class="system-node system-tests">Tests</div>
+          </div>
+        </div>
+        <div class="hero-content">
+          <p class="eyebrow">Architecture for agentic coding</p>
+          <h1 id="hero-title">AI Atomic Feature Architecture</h1>
+          <p class="hero-copy">
+            Build software as small, isolated, AI-implementable features. Each feature ships with a contract: input, output, capabilities, rules, and behavioral tests.
+          </p>
+          <div class="hero-points" aria-label="AIFA highlights">
+            <span>Atomic tasks</span>
+            <span>Explicit context</span>
+            <span>Runtime capabilities</span>
+          </div>
+          <div class="hero-actions" aria-label="Primary actions">
+            <a class="button primary" href="https://github.com/AdrianBesleaga/AIFA">View on GitHub</a>
+            <a class="button secondary" href="#contract">See the contract</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="intro-band" aria-label="Core question">
+        <div class="section-inner intro-grid">
+          <div>
+            <p class="section-kicker">The question</p>
+            <h2>Can an AI agent implement one feature without understanding the whole project?</h2>
+          </div>
+          <p>
+            AIFA moves hidden project knowledge into explicit architectural contracts. The task stays small because the context is packaged, bounded, and testable.
+          </p>
+        </div>
+      </section>
+
+      <section id="model" class="section-inner model-section">
+        <div class="section-heading">
+          <p class="section-kicker">The model</p>
+          <h2>One feature. One context. Narrow capabilities.</h2>
+        </div>
+
+        <div class="flow" aria-label="AIFA flow">
+          <article>
+            <span>01</span>
+            <h3>Ticket Contract</h3>
+            <p>The work item defines the goal, inputs, outputs, rules, failure cases, and acceptance tests.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Atomic Feature</h3>
+            <p>The implementation receives one context object and uses only declared capabilities.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Capability Runtime</h3>
+            <p>The runtime owns infrastructure like persistence, permissions, queues, logging, and transactions.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Behavioral Tests</h3>
+            <p>Tests verify what the feature does, so the implementation can evolve without breaking the contract.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="compare-band" aria-labelledby="compare-title">
+        <div class="section-inner compare-grid">
+          <div>
+            <p class="section-kicker">The shift</p>
+            <h2 id="compare-title">From codebase archaeology to feature contracts.</h2>
+            <p>
+              Most systems make agents explore first and implement second. AIFA makes the architecture say what the feature may know and do before implementation begins.
+            </p>
+          </div>
+          <div class="comparison" aria-label="Architecture comparison">
+            <div>
+              <h3>Traditional</h3>
+              <code>Feature -> Service -> Repository -> Database</code>
+            </div>
+            <div>
+              <h3>AIFA</h3>
+              <code>Feature -> Context Capability -> Runtime -> Infrastructure</code>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contract" class="section-inner contract-section">
+        <div class="section-heading">
+          <p class="section-kicker">The contract</p>
+          <h2>The ticket becomes an interface for humans and AI agents.</h2>
+        </div>
+
+        <div class="contract-layout">
+          <div class="contract-copy">
+            <p>
+              A good AIFA ticket removes guesswork. It tells the agent what to build, which capabilities are available, which behavior matters, and when the work is done.
+            </p>
+            <ul class="check-list">
+              <li>One responsibility</li>
+              <li>Explicit input and output</li>
+              <li>Declared capabilities</li>
+              <li>Known failure cases</li>
+              <li>Acceptance tests before implementation</li>
+            </ul>
+          </div>
+          <pre class="code-panel"><code># Feature: Archive Project
+
+Goal:
+Allow an authorized actor to archive one project.
+
+Input:
+- projectId: string
+
+Output:
+- projectId: string
+- archived: boolean
+
+Allowed capabilities:
+- project.load
+- project.save
+- permission.check
+- audit.record
+
+Acceptance tests:
+- Archives an active project
+- Rejects unauthorized actors
+- Returns not_found for missing projects</code></pre>
+        </div>
+      </section>
+
+      <section id="poc" class="poc-band">
+        <div class="section-inner poc-grid">
+          <div>
+            <p class="section-kicker">Proof of concept</p>
+            <h2>A tiny runtime that proves the shape.</h2>
+            <p>
+              The first repo includes a memory runtime, one atomic feature, one ticket contract, and behavioral tests. It is intentionally small so the architecture stays visible.
+            </p>
+          </div>
+          <div class="terminal" aria-label="Run commands">
+            <div class="terminal-bar">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <pre><code>$ npm test
+4 tests passed
+
+$ npm run demo
+{
+  "ok": true,
+  "value": {
+    "projectId": "project-1",
+    "archived": true
+  }
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-inner principles-section" aria-labelledby="principles-title">
+        <div class="section-heading">
+          <p class="section-kicker">Principles</p>
+          <h2 id="principles-title">Designed for delegatable software work.</h2>
+        </div>
+        <div class="principles">
+          <article>
+            <h3>Atomic</h3>
+            <p>Each feature is the smallest meaningful behavior that can be implemented and tested independently.</p>
+          </article>
+          <article>
+            <h3>Explicit</h3>
+            <p>Input, output, capabilities, and failure cases are declared before code is written.</p>
+          </article>
+          <article>
+            <h3>Bounded</h3>
+            <p>Features cannot reach into hidden infrastructure or global application state.</p>
+          </article>
+          <article>
+            <h3>Verifiable</h3>
+            <p>Behavioral tests act as the completion signal for humans and AI agents.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="social-band">
+        <div class="section-inner social-copy">
+          <p class="section-kicker">Shareable description</p>
+          <h2>Software architecture for AI-native implementation.</h2>
+          <p>
+            AI Atomic Feature Architecture is a way to design applications so each feature can be implemented from a small contract instead of full project context.
+          </p>
+          <a class="button primary" href="https://github.com/AdrianBesleaga/AIFA">Star the repo</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>AI Atomic Feature Architecture is an open architecture experiment by Adrian Besleaga.</p>
+      <a href="https://adrianweb.xyz">adrianweb.xyz</a>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
