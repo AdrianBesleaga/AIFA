@@ -1,0 +1,15 @@
+{
+  "name": "ai-atomic-feature-architecture",
+  "version": "0.1.0",
+  "description": "A proof of concept for AI Atomic Feature Architecture.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "demo": "node src/demo.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
+
