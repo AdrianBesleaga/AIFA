@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","additionalProperties":false,"required":["taskId","expectedVersion","idempotencyKey","confirmed"],"properties":{"taskId":{"type":"string","minLength":1},"expectedVersion":{"type":"integer","minimum":1},"idempotencyKey":{"type":"string","minLength":16,"maxLength":128},"confirmed":{"const":true}}}

@@ -1,0 +1,22 @@
+{
+  "name": "ai-todo-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate:architecture": "tsx core/architecture/validate-feature-definitions.ts",
+    "generate:contracts": "tsx core/architecture/generate-contract-types.ts",
+    "check:imports": "depcruise --config core/architecture/.dependency-cruiser.cjs .",
+    "check": "npm run validate:architecture && npm run generate:contracts && npm run check:imports && tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "dependency-cruiser": "^16.10.0",
+    "json-schema-to-typescript": "^15.0.4",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": { "node": ">=20" }
+}

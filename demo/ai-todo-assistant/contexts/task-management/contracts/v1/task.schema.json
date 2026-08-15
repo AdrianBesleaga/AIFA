@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aifa.dev/task-management/contracts/v1/task.schema.json",
+  "title": "Task V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "tenantId", "title", "category", "priority", "status", "version", "createdAt", "updatedAt", "completedAt"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "tenantId": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1, "maxLength": 240 },
+    "category": { "enum": ["Work", "Personal", "Sport", "Shopping", "Other"] },
+    "priority": { "enum": ["Low", "Medium", "High"] },
+    "status": { "enum": ["Todo", "InProgress", "Completed"] },
+    "version": { "type": "integer", "minimum": 1 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "completedAt": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

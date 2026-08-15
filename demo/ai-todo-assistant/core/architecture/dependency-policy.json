@@ -1,0 +1,16 @@
+{
+  "layers": ["core", "bounded-context-domain", "feature", "adapter"],
+  "allowedImports": {
+    "core": ["core"],
+    "bounded-context-domain": ["core", "bounded-context-domain"],
+    "feature": ["core", "bounded-context-domain", "feature-self"],
+    "adapter": ["core", "feature"]
+  },
+  "forbidden": [
+    "core-to-context-or-feature",
+    "feature-to-other-feature",
+    "cross-context-domain-import",
+    "circular-import"
+  ],
+  "crossContextRule": "Use versioned contracts or domain events; never import another context's domain or feature module."
+}

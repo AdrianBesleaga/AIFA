@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../../core/architecture/feature-definition.schema.json",
+  "name": "create-task",
+  "boundedContext": "task-management",
+  "businessNeed": "Capture a categorized commitment quickly and consistently, whether it originates from a person or an accepted AI suggestion.",
+  "dependsOn": [],
+  "consumesContracts": [],
+  "backend": { "route": "/api/tasks", "method": "POST", "capabilities": ["TaskCreate", "IdCreate", "ClockNow", "AuditRecord"], "mcp": { "exposed": true, "toolName": "create_task" } },
+  "frontend": { "slots": ["TaskComposer"] },
+  "contracts": { "input": "contracts/input.schema.json", "output": "contracts/output.schema.json", "mcpInput": "contracts/input.schema.json" },
+  "events": ["task-management/contracts/events/v1/task-created.schema.json"],
+  "security": { "mutation": true, "actorRequired": true, "idempotent": true, "requiresConfirmation": false, "concurrency": "none", "mcpScopes": ["TaskWrite"] },
+  "workItems": [
+    { "id": "CRT-1", "description": "Define validated create-task input using TaskCategory and TaskPriority enums.", "acceptanceCriterion": "Invalid category, priority, or blank title returns a typed failure." },
+    { "id": "CRT-2", "description": "Implement and test the AIFA feature using only declared capabilities.", "acceptanceCriterion": "A task is persisted as Todo and audited." },
+    { "id": "CRT-3", "description": "Register the MUI composer slot contribution.", "acceptanceCriterion": "A submitted form refreshes the typed task model." }
+  ]
+}

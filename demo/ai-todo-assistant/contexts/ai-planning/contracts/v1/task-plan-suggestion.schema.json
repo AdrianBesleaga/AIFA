@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aifa.dev/ai-planning/contracts/v1/task-plan-suggestion.schema.json",
+  "title": "Task Plan Suggestion V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title", "category", "priority", "rationale"],
+  "properties": {
+    "title": { "type": "string", "minLength": 1, "maxLength": 240 },
+    "category": { "enum": ["Work", "Personal", "Sport", "Shopping", "Other"] },
+    "priority": { "enum": ["Low", "Medium", "High"] },
+    "rationale": { "type": "string", "maxLength": 1000 }
+  }
+}
