@@ -2,6 +2,8 @@
 
 Focusly is an AI-assisted task workspace built as a production-style demonstration of **AI Atomic Feature Architecture (AIFA)**. It helps people turn a natural-language goal into a practical task plan, review the suggestions, and move approved work through a focused Kanban workflow.
 
+> New to the repository? Start with the [AIFA overview](../../README.md), then use this page to run the application. The [full architecture](./ARCHITECTURE.md) is authoritative for implementation decisions.
+
 ![Focusly landing page](./public/readme-preview.jpg)
 
 ## The workspace
@@ -84,7 +86,7 @@ contexts/
 tests/           Runtime, boundary, architecture, and integration coverage
 ```
 
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for the full architectural contract and [BUSINESS.md](./BUSINESS.md) for the product rationale.
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for the full architectural contract, [AGENTS.md](./AGENTS.md) for the contributor working agreement, [BUSINESS.md](./BUSINESS.md) for the product rationale, and the concise [AIFA architecture guide](../../docs/architecture.md) for the conceptual model.
 
 ## Run locally
 

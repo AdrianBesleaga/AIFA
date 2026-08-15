@@ -3,275 +3,442 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AI Atomic Feature Architecture</title>
+    <title>AIFA — Clearer software delivery for humans and AI</title>
     <meta
       name="description"
-      content="An architecture for building software as small, isolated, AI-implementable features with explicit contracts and runtime-provided capabilities."
+      content="AIFA helps people and AI agents deliver software together through clear feature briefs, bounded implementation, and automated verification."
     />
-    <meta property="og:title" content="AI Atomic Feature Architecture" />
+    <meta name="theme-color" content="#0b1713" />
+    <meta property="og:title" content="AIFA — AI Atomic Feature Architecture" />
     <meta
       property="og:description"
-      content="Build software as atomic features that AI agents can implement without full project context."
+      content="Clear feature briefs help people and AI agents deliver faster, safer, and easier-to-review software changes."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://adrianbesleaga.github.io/AIFA/" />
     <meta property="og:image" content="https://adrianbesleaga.github.io/AIFA/social-card.svg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="AI Atomic Feature Architecture" />
+    <meta name="twitter:title" content="AIFA — AI Atomic Feature Architecture" />
     <meta
       name="twitter:description"
-      content="AIFA turns feature work into explicit contracts: input, output, capabilities, rules, and behavioral tests."
+      content="Clearer, safer software delivery for human and AI implementation."
     />
     <meta name="twitter:image" content="https://adrianbesleaga.github.io/AIFA/social-card.svg" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+
     <header class="site-header">
-      <a class="brand" href="#top" aria-label="AI Atomic Feature Architecture home">
-        <span class="brand-mark">A</span>
+      <a class="brand" href="#top" aria-label="AIFA home">
+        <span class="brand-mark" aria-hidden="true">A</span>
         <span>AIFA</span>
       </a>
       <nav aria-label="Primary navigation">
-        <a href="#model">Model</a>
-        <a href="#contract">Contract</a>
-        <a href="#poc">PoC</a>
-        <a class="nav-cta" href="https://github.com/AdrianBesleaga/AIFA">GitHub</a>
+        <a href="#benefits">Why AIFA</a>
+        <a href="#collaboration">Human + AI</a>
+        <a href="#demo">Demo</a>
+        <a href="#technical">Technical</a>
       </nav>
+      <a class="header-cta" href="https://github.com/AdrianBesleaga/AIFA">View GitHub</a>
     </header>
 
-    <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-scene" aria-hidden="true">
+    <main id="content">
+      <section id="top" class="hero" aria-labelledby="hero-title">
+        <div class="hero-ambient" aria-hidden="true">
           <canvas id="aifa-canvas"></canvas>
-          <div class="scanline"></div>
           <div class="system-map">
-            <div class="system-node system-ticket">Ticket Contract</div>
-            <div class="system-node system-context">Context</div>
-            <div class="system-node system-feature">Atomic Feature</div>
-            <div class="system-node system-runtime">Runtime</div>
-            <div class="system-node system-tests">Tests</div>
+            <span class="system-node node-definition">Business need</span>
+            <span class="system-node node-manifest">Clear brief</span>
+            <span class="system-node node-feature">Feature</span>
+            <span class="system-node node-slot">Human + AI</span>
+            <span class="system-node node-runtime">Verified result</span>
           </div>
-        </div>
-        <div class="hero-content">
-          <p class="eyebrow">Architecture for agentic coding</p>
-          <h1 id="hero-title">AI Atomic Feature Architecture</h1>
-          <p class="hero-copy">
-            Build software as small, isolated, AI-implementable features. Each feature ships with a
-            contract: input, output, capabilities, rules, and behavioral tests.
-          </p>
-          <div class="hero-points" aria-label="AIFA highlights">
-            <span>Atomic tasks</span>
-            <span>Explicit context</span>
-            <span>Runtime capabilities</span>
-          </div>
-          <div class="hero-actions" aria-label="Primary actions">
-            <a class="button primary" href="https://github.com/AdrianBesleaga/AIFA"
-              >View on GitHub</a
-            >
-            <a class="button secondary" href="#contract">See the contract</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="intro-band" aria-label="Core question">
-        <div class="section-inner intro-grid">
-          <div>
-            <p class="section-kicker">The question</p>
-            <h2>Can an AI agent implement one feature without understanding the whole project?</h2>
-          </div>
-          <p>
-            AIFA moves hidden project knowledge into explicit architectural contracts. The task
-            stays small because the context is packaged, bounded, and testable.
-          </p>
-        </div>
-      </section>
-
-      <section id="model" class="section-inner model-section">
-        <div class="section-heading">
-          <p class="section-kicker">The model</p>
-          <h2>One feature. One context. Narrow capabilities.</h2>
         </div>
 
-        <div class="flow" aria-label="AIFA flow">
-          <article>
-            <span>01</span>
-            <h3>Ticket Contract</h3>
-            <p>
-              The work item defines the goal, inputs, outputs, rules, failure cases, and acceptance
-              tests.
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <p class="eyebrow">AI Atomic Feature Architecture</p>
+            <h1 id="hero-title">Turn ideas into safer, clearer software changes.</h1>
+            <p class="hero-lede">
+              AIFA gives every feature a shared brief, so people and AI agents know what to build,
+              which rules matter, and what proves the work is complete.
             </p>
-          </article>
-          <article>
-            <span>02</span>
-            <h3>Atomic Feature</h3>
-            <p>
-              The implementation receives one context object and uses only declared capabilities.
-            </p>
-          </article>
-          <article>
-            <span>03</span>
-            <h3>Capability Runtime</h3>
-            <p>
-              The runtime owns infrastructure like persistence, permissions, queues, logging, and
-              transactions.
-            </p>
-          </article>
-          <article>
-            <span>04</span>
-            <h3>Behavioral Tests</h3>
-            <p>
-              Tests verify what the feature does, so the implementation can evolve without breaking
-              the contract.
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <section class="compare-band" aria-labelledby="compare-title">
-        <div class="section-inner compare-grid">
-          <div>
-            <p class="section-kicker">The shift</p>
-            <h2 id="compare-title">From codebase archaeology to feature contracts.</h2>
-            <p>
-              Most systems make agents explore first and implement second. AIFA makes the
-              architecture say what the feature may know and do before implementation begins.
-            </p>
-          </div>
-          <div class="comparison" aria-label="Architecture comparison">
-            <div>
-              <h3>Traditional</h3>
-              <code>Feature -> Service -> Repository -> Database</code>
+            <div class="hero-actions">
+              <a
+                class="button button-primary"
+                href="https://github.com/AdrianBesleaga/AIFA/tree/main/demo/ai-todo-assistant"
+                >See the real example <span aria-hidden="true">→</span></a
+              >
+              <a
+                class="button button-ghost"
+                href="https://github.com/AdrianBesleaga/AIFA/blob/main/docs/architecture.md"
+                >How AIFA works</a
+              >
             </div>
-            <div>
-              <h3>AIFA</h3>
-              <code>Feature -> Context Capability -> Runtime -> Infrastructure</code>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="contract" class="section-inner contract-section">
-        <div class="section-heading">
-          <p class="section-kicker">The contract</p>
-          <h2>The ticket becomes an interface for humans and AI agents.</h2>
-        </div>
-
-        <div class="contract-layout">
-          <div class="contract-copy">
-            <p>
-              A good AIFA ticket removes guesswork. It tells the agent what to build, which
-              capabilities are available, which behavior matters, and when the work is done.
-            </p>
-            <ul class="check-list">
-              <li>One responsibility</li>
-              <li>Explicit input and output</li>
-              <li>Declared capabilities</li>
-              <li>Known failure cases</li>
-              <li>Acceptance tests before implementation</li>
+            <ul class="signal-list" aria-label="Business highlights">
+              <li>Less hidden context</li>
+              <li>Safer delegation</li>
+              <li>Easier review</li>
             </ul>
           </div>
-          <pre class="code-panel"><code># Feature: Archive Project
 
-Goal:
-Allow an authorized actor to archive one project.
-
-Input:
-- projectId: string
-
-Output:
-- projectId: string
-- archived: boolean
-
-Allowed capabilities:
-- project.load
-- project.save
-- permission.check
-- audit.record
-
-Acceptance tests:
-- Archives an active project
-- Rejects unauthorized actors
-- Returns not_found for missing projects</code></pre>
-        </div>
-      </section>
-
-      <section id="poc" class="poc-band">
-        <div class="section-inner poc-grid">
-          <div>
-            <p class="section-kicker">Proof of concept</p>
-            <h2>A tiny runtime that proves the shape.</h2>
-            <p>
-              The first repo includes a memory runtime, one atomic feature, one ticket contract, and
-              behavioral tests. It is intentionally small so the architecture stays visible.
-            </p>
-          </div>
-          <div class="terminal" aria-label="Run commands">
-            <div class="terminal-bar">
-              <span></span>
-              <span></span>
-              <span></span>
+          <div class="outcome-panel" aria-label="Business outcomes from AIFA">
+            <p class="outcome-eyebrow">From request to result</p>
+            <h2>A shared definition of “done.”</h2>
+            <div class="outcome-steps">
+              <div><span>01</span><strong>State the customer need</strong><small>Everyone starts from the same outcome.</small></div>
+              <div><span>02</span><strong>Make rules explicit</strong><small>Permissions, risks, and edge cases are visible.</small></div>
+              <div><span>03</span><strong>Implement in a boundary</strong><small>A human or AI works without unrelated code.</small></div>
+              <div><span>04</span><strong>Verify automatically</strong><small>Tests prove behavior and architecture.</small></div>
             </div>
-            <pre><code>$ npm test
-4 tests passed
-
-$ npm run demo
-{
-  "ok": true,
-  "value": {
-    "projectId": "project-1",
-    "archived": true
-  }
-}</code></pre>
+            <p class="outcome-note"><span class="status-dot"></span> Smaller scope. Clearer review. Preserved knowledge.</p>
           </div>
         </div>
       </section>
 
-      <section class="section-inner principles-section" aria-labelledby="principles-title">
+      <section class="question-band" aria-label="The AIFA business question">
+        <p class="section-label">The business question</p>
+        <blockquote>
+          What if a team could change one feature without first rediscovering the whole product?
+        </blockquote>
+        <p class="answer">AIFA turns hidden project knowledge into a visible, reviewable contract.</p>
+      </section>
+
+      <section id="benefits" class="section benefits-section" aria-labelledby="benefits-title">
         <div class="section-heading">
-          <p class="section-kicker">Principles</p>
-          <h2 id="principles-title">Designed for delegatable software work.</h2>
+          <div>
+            <p class="section-label">Why it is good</p>
+            <h2 id="benefits-title">Better delivery through shared understanding.</h2>
+          </div>
+          <p>
+            AIFA does not remove complexity. It makes complexity visible before implementation,
+            so teams can plan, delegate, and review work with fewer surprises.
+          </p>
         </div>
-        <div class="principles">
-          <article>
-            <h3>Atomic</h3>
-            <p>
-              Each feature is the smallest meaningful behavior that can be implemented and tested
-              independently.
-            </p>
-          </article>
-          <article>
-            <h3>Explicit</h3>
-            <p>
-              Input, output, capabilities, and failure cases are declared before code is written.
-            </p>
-          </article>
-          <article>
-            <h3>Bounded</h3>
-            <p>Features cannot reach into hidden infrastructure or global application state.</p>
-          </article>
-          <article>
-            <h3>Verifiable</h3>
-            <p>Behavioral tests act as the completion signal for humans and AI agents.</p>
-          </article>
+        <div class="benefits-grid">
+          <article><span>↗</span><h3>Faster delivery</h3><p>Less time is spent exploring unrelated code before useful work begins.</p></article>
+          <article><span>◎</span><h3>Lower risk</h3><p>Permissions, failures, system access, and success criteria are explicit.</p></article>
+          <article><span>≋</span><h3>Parallel work</h3><p>Separate feature boundaries reduce overlap and merge conflicts.</p></article>
+          <article><span>✓</span><h3>Easier review</h3><p>Reviewers compare a focused change against a visible contract.</p></article>
+          <article><span>◇</span><h3>Preserved knowledge</h3><p>Important rules live with the feature instead of only in people’s memory.</p></article>
+          <article><span>↻</span><h3>Safer change</h3><p>Technology can evolve behind stable capabilities without rewriting behavior.</p></article>
         </div>
       </section>
 
-      <section class="social-band">
-        <div class="section-inner social-copy">
-          <p class="section-kicker">Shareable description</p>
-          <h2>Software architecture for AI-native implementation.</h2>
+      <section id="collaboration" class="collaboration-band" aria-labelledby="collaboration-title">
+        <div class="section collaboration-layout">
+          <div class="collaboration-intro">
+            <p class="section-label light">Human + AI implementation</p>
+            <h2 id="collaboration-title">People set direction. AI accelerates bounded work.</h2>
+            <p>
+              The contract is the handoff. It gives AI enough context to help while keeping human
+              judgment in control of customer value, policy, and architectural decisions.
+            </p>
+          </div>
+          <div class="partner-grid">
+            <article>
+              <p class="partner-label human">Human responsibility</p>
+              <h3>Purpose and judgment</h3>
+              <ul><li>Choose the customer outcome</li><li>Define business rules and risk</li><li>Review experience and tradeoffs</li><li>Approve architectural change</li></ul>
+            </article>
+            <article>
+              <p class="partner-label ai">AI contribution</p>
+              <h3>Speed and consistency</h3>
+              <ul><li>Implement within the contract</li><li>Build backend and frontend pieces</li><li>Write focused tests</li><li>Explain the completed change</li></ul>
+            </article>
+          </div>
+          <div class="alignment-strip"><span>Shared brief</span><b>→</b><span>Bounded implementation</span><b>→</b><span>Automated checks</span><b>→</b><span>Human review</span></div>
+        </div>
+      </section>
+
+      <section id="demo" class="demo-band" aria-labelledby="demo-title">
+        <div class="section demo-layout">
+          <div class="demo-copy">
+            <p class="section-label light">A real product, not a toy example</p>
+            <h2 id="demo-title">Focusly shows the business idea in working software.</h2>
+            <p>
+              People can manage tasks while AI proposes useful plans. Both use the same approved
+              product operations, so speed does not come at the cost of control.
+            </p>
+            <ul class="demo-stack" aria-label="What Focusly demonstrates">
+              <li>Human + AI workflows</li>
+              <li>Reviewable AI actions</li>
+              <li>Shared business rules</li>
+              <li>Automated safety checks</li>
+            </ul>
+            <a
+              class="button button-light"
+              href="https://github.com/AdrianBesleaga/AIFA/tree/main/demo/ai-todo-assistant"
+              >Explore Focusly <span aria-hidden="true">→</span></a
+            >
+          </div>
+
+          <div class="product-window" aria-label="Stylized Focusly product preview">
+            <div class="product-topbar">
+              <div class="product-brand"><span>✓</span> Focusly</div>
+              <div class="product-user"></div>
+            </div>
+            <div class="product-body">
+              <aside aria-hidden="true">
+                <span class="active"></span><span></span><span></span><span></span>
+              </aside>
+              <div class="board">
+                <div class="board-header">
+                  <div><small>MY WORKSPACE</small><strong>Tasks</strong></div>
+                  <button type="button" tabindex="-1">+ New task</button>
+                </div>
+                <div class="columns">
+                  <div class="column">
+                    <p><span class="dot coral"></span> Todo <b>3</b></p>
+                    <div class="task"><i class="tag green"></i><strong>Prepare launch brief</strong><small>Work · High</small></div>
+                    <div class="task"><i class="tag violet"></i><strong>Review AI suggestions</strong><small>Planning · Medium</small></div>
+                  </div>
+                  <div class="column">
+                    <p><span class="dot gold"></span> In progress <b>2</b></p>
+                    <div class="task"><i class="tag blue"></i><strong>Map feature contracts</strong><small>Work · High</small></div>
+                  </div>
+                  <div class="column">
+                    <p><span class="dot green"></span> Completed <b>4</b></p>
+                    <div class="task done"><i class="tag green"></i><strong>Connect local AI</strong><small>Setup · Done</small></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="technical" class="technical-intro" aria-labelledby="technical-title">
+        <p class="section-label light">Technical details</p>
+        <h2 id="technical-title">Now, see how the architecture creates those outcomes.</h2>
+        <p>One feature contract connects business intent, backend behavior, frontend UI, and verification.</p>
+      </section>
+
+      <section id="model" class="section model-section" aria-labelledby="model-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-label">The model</p>
+            <h2 id="model-title">Product behavior in one bounded slice.</h2>
+          </div>
           <p>
-            AI Atomic Feature Architecture is a way to design applications so each feature can be
-            implemented from a small contract instead of full project context.
+            The definition states what a feature is allowed to know and do. Discovery connects it
+            to the application. The runtime enforces the boundary.
           </p>
-          <a class="button primary" href="https://github.com/AdrianBesleaga/AIFA">Star the repo</a>
+        </div>
+
+        <ol class="model-grid">
+          <li>
+            <span class="step-number">01</span>
+            <div>
+              <h3>Declare</h3>
+              <p>Define business intent, schemas, failures, capabilities, security, and UI slots.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-number">02</span>
+            <div>
+              <h3>Discover</h3>
+              <p>Load backend routes, MCP tools, and frontend contributions from local manifests.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-number">03</span>
+            <div>
+              <h3>Execute</h3>
+              <p>Run feature logic with validated input and only its explicitly granted capabilities.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-number">04</span>
+            <div>
+              <h3>Verify</h3>
+              <p>Enforce schemas, imports, dependency graphs, boundaries, and behavior in CI.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="anatomy-band" aria-labelledby="anatomy-title">
+        <div class="section anatomy-layout">
+          <div class="anatomy-copy">
+            <p class="section-label">Feature anatomy</p>
+            <h2 id="anatomy-title">Everything needed to understand one capability.</h2>
+            <p>
+              Backend behavior and frontend affordance stay close without collapsing their
+              boundaries. Each file has one visible architectural job.
+            </p>
+            <a
+              class="text-link"
+              href="https://github.com/AdrianBesleaga/AIFA/tree/main/demo/ai-todo-assistant/contexts/task-management/features/create-task"
+              >Open an implemented feature <span aria-hidden="true">→</span></a
+            >
+          </div>
+          <div class="file-tree" role="img" aria-label="An AIFA feature folder structure">
+            <div class="tree-root"><span>◆</span> create-task/</div>
+            <div><span>◇</span> feature.definition.json <small>planning contract</small></div>
+            <div><span>◇</span> manifest.ts <small>executable binding</small></div>
+            <div><span>◇</span> contracts/ <small>input + output schemas</small></div>
+            <div><span>◇</span> backend/ <small>feature behavior</small></div>
+            <div><span>◇</span> frontend/ <small>slot contribution + hook</small></div>
+            <div><span>◇</span> IMPLEMENTATION_PLAN.md <small>acceptance guide</small></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="architecture" class="section architecture-section" aria-labelledby="architecture-title">
+        <div class="section-heading compact">
+          <div>
+            <p class="section-label">One feature, two surfaces</p>
+            <h2 id="architecture-title">Clear on the backend. Composable on the frontend.</h2>
+          </div>
+        </div>
+
+        <div class="architecture-grid">
+          <article class="architecture-card backend-card">
+            <div class="card-heading">
+              <span class="card-icon">B</span>
+              <div><p>Runtime boundary</p><h3>Backend</h3></div>
+            </div>
+            <p class="card-lede">
+              HTTP routes and MCP tools invoke the same discovered feature, so browser users and AI
+              clients follow identical product rules.
+            </p>
+            <ol class="mini-flow">
+              <li><span>01</span> Authenticate actor</li>
+              <li><span>02</span> Validate schema + authorization</li>
+              <li><span>03</span> Execute with granted capabilities</li>
+              <li><span>04</span> Commit data + audit + outbox</li>
+            </ol>
+            <p class="boundary-note">No database, HTTP, environment, or provider imports in features.</p>
+          </article>
+
+          <article class="architecture-card frontend-card">
+            <div class="card-heading">
+              <span class="card-icon">F</span>
+              <div><p>Composition boundary</p><h3>Frontend</h3></div>
+            </div>
+            <p class="card-lede">
+              The React shell owns typed slots and shared runtime services. Features contribute UI
+              without reaching into each other or the shell.
+            </p>
+            <ol class="mini-flow">
+              <li><span>01</span> Discover frontend manifest</li>
+              <li><span>02</span> Register typed slot contribution</li>
+              <li><span>03</span> Call feature through local hook</li>
+              <li><span>04</span> Invalidate semantic cache tags</li>
+            </ol>
+            <p class="boundary-note">No feature-to-feature component imports or refresh commands.</p>
+          </article>
+        </div>
+
+        <div class="shared-runtime" aria-label="Shared AIFA contracts">
+          <span>JSON Schema contracts</span>
+          <span>Dynamic manifests</span>
+          <span>Typed failures</span>
+          <span>Boundary tests</span>
+        </div>
+      </section>
+
+      <section class="code-examples-band" aria-labelledby="code-title">
+        <div class="section">
+          <div class="section-heading">
+            <div>
+              <p class="section-label light">Short code examples</p>
+              <h2 id="code-title">One idea, expressed at each boundary.</h2>
+            </div>
+            <p>
+              These shortened examples come from Focusly’s Create Task feature. The business need
+              stays recognizable all the way from declaration to UI.
+            </p>
+          </div>
+          <div class="code-examples">
+            <article>
+              <header><span>01</span><div><small>Declare</small><h3>The contract</h3></div></header>
+              <pre><code><span class="code-muted">{</span>
+  <span class="code-key">"name"</span>: <span class="code-value">"create-task"</span>,
+  <span class="code-key">"capabilities"</span>: [
+    <span class="code-value">"TaskCreate"</span>,
+    <span class="code-value">"ClockNow"</span>
+  ],
+  <span class="code-key">"slots"</span>: [<span class="code-value">"TaskComposer"</span>]
+<span class="code-muted">}</span></code></pre>
+              <p>States what the feature may do and where it appears.</p>
+            </article>
+            <article>
+              <header><span>02</span><div><small>Backend</small><h3>The behavior</h3></div></header>
+              <pre><code><span class="code-key">async</span> execute(context) {
+  <span class="code-key">const</span> task = <span class="code-key">await</span>
+    context.capabilities.TaskCreate({
+      task: {
+        title: context.input.title,
+        status: <span class="code-value">"Todo"</span>
+      }
+    });
+
+  <span class="code-key">return</span> context.ok({ task });
+}</code></pre>
+              <p>Uses only the system operations granted by the runtime.</p>
+            </article>
+            <article>
+              <header><span>03</span><div><small>Frontend</small><h3>The contribution</h3></div></header>
+              <pre><code><span class="code-key">export const</span> contribution = {
+  slot: <span class="code-value">"TaskComposer"</span>,
+  name: <span class="code-value">"create-task-form"</span>,
+  render: () =&gt; <span class="code-muted">&lt;CreateTaskForm /&gt;</span>
+};</code></pre>
+              <p>Adds feature-owned UI without editing a central screen.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="docs" class="section docs-section" aria-labelledby="docs-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-label">Choose your path</p>
+            <h2 id="docs-title">From idea to implementation.</h2>
+          </div>
+          <p>Start with the overview, inspect the working app, then use the detailed contract when contributing.</p>
+        </div>
+
+        <div class="docs-grid">
+          <a href="https://github.com/AdrianBesleaga/AIFA/blob/main/README.md">
+            <span>01</span><h3>Project overview</h3><p>What AIFA is, why it exists, and how to navigate the repository.</p><b>Read README →</b>
+          </a>
+          <a href="https://github.com/AdrianBesleaga/AIFA/blob/main/docs/architecture.md">
+            <span>02</span><h3>Architecture guide</h3><p>The feature, runtime, backend, frontend, and dependency model.</p><b>Understand AIFA →</b>
+          </a>
+          <a href="https://github.com/AdrianBesleaga/AIFA/blob/main/demo/ai-todo-assistant/ARCHITECTURE.md">
+            <span>03</span><h3>Implementation architecture</h3><p>The authoritative security, data, composition, and quality rules.</p><b>Go deeper →</b>
+          </a>
+          <a href="https://github.com/AdrianBesleaga/AIFA/blob/main/docs/ticket-contract.md">
+            <span>04</span><h3>Ticket contract</h3><p>How to specify a feature so it can be safely implemented and verified.</p><b>Write a feature →</b>
+          </a>
+        </div>
+      </section>
+
+      <section class="start-band" aria-labelledby="start-title">
+        <div>
+          <p class="section-label light">Run the example</p>
+          <h2 id="start-title">See the boundaries in working code.</h2>
+          <p>Clone the repository, enter the demo, and start Focusly locally.</p>
+        </div>
+        <div class="terminal">
+          <div class="window-bar"><span></span><span></span><span></span><code>terminal</code></div>
+          <pre><code><span class="prompt">$</span> cd demo/ai-todo-assistant
+<span class="prompt">$</span> npm install
+<span class="prompt">$</span> cp .env.example .env
+<span class="prompt">$</span> docker compose up -d
+<span class="prompt">$</span> npm run dev</code></pre>
         </div>
       </section>
     </main>
 
     <footer class="footer">
-      <p>AI Atomic Feature Architecture is an open architecture experiment by Adrian Besleaga.</p>
-      <a href="https://adrianweb.xyz">adrianweb.xyz</a>
+      <div><span class="brand-mark" aria-hidden="true">A</span><p><strong>AIFA</strong><br />AI Atomic Feature Architecture</p></div>
+      <p>Open architecture experiment by <a href="https://adrianweb.xyz">Adrian Besleaga</a>.</p>
+      <a href="https://github.com/AdrianBesleaga/AIFA">GitHub <span aria-hidden="true">↗</span></a>
     </footer>
 
     <script src="./script.js"></script>
