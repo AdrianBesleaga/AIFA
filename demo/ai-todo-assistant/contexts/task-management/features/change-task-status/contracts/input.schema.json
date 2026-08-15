@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChangeTaskStatusInputV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["taskId", "status", "expectedVersion"],
+  "properties": {
+    "taskId": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["Todo", "InProgress", "Completed"] },
+    "expectedVersion": { "type": "integer", "minimum": 1 }
+  }
+}

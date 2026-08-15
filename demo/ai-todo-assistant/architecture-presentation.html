@@ -1,0 +1,1233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="A presentation explaining how AI Atomic Feature Architecture makes backend and frontend extension easier." />
+  <title>AIFA — Architecture for Easy Extension</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f7f8ff;
+      --muted: #a8afc7;
+      --faint: #727b9a;
+      --line: rgba(255, 255, 255, 0.11);
+      --panel: rgba(255, 255, 255, 0.055);
+      --panel-strong: rgba(255, 255, 255, 0.085);
+      --violet: #9c8cff;
+      --violet-strong: #745cff;
+      --cyan: #63d9ff;
+      --mint: #5ce0b6;
+      --amber: #ffc66d;
+      --rose: #ff809f;
+      --page: #090b13;
+      --page-alt: #10121e;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
+      background: var(--page);
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 16% 8%, rgba(116, 92, 255, 0.22), transparent 28rem),
+        radial-gradient(circle at 88% 28%, rgba(99, 217, 255, 0.12), transparent 26rem),
+        var(--page);
+    }
+
+    button, a { font: inherit; }
+    button { color: inherit; }
+
+    .deck-progress {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: 3px;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .deck-progress > span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--violet), var(--cyan));
+      transition: width 180ms ease;
+    }
+
+    .deck-nav {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      z-index: 40;
+      display: grid;
+      gap: 10px;
+      transform: translateY(-50%);
+    }
+
+    .deck-nav button {
+      width: 10px;
+      height: 10px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.24);
+      cursor: pointer;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    .deck-nav button[aria-current="true"] {
+      background: var(--cyan);
+      transform: scale(1.45);
+    }
+
+    .slide {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100svh;
+      padding: clamp(64px, 7vw, 112px) clamp(28px, 7vw, 120px);
+      display: grid;
+      align-items: center;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 42vw;
+      height: 42vw;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(116, 92, 255, 0.13), transparent 68%);
+      top: -17vw;
+      right: -10vw;
+      pointer-events: none;
+    }
+
+    .slide:nth-child(even)::before {
+      top: auto;
+      right: auto;
+      bottom: -20vw;
+      left: -12vw;
+      background: radial-gradient(circle, rgba(99, 217, 255, 0.1), transparent 68%);
+    }
+
+    .slide-inner {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--cyan);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      max-width: 970px;
+      margin-bottom: 26px;
+      font-size: clamp(3.3rem, 8.3vw, 7.6rem);
+      line-height: 0.92;
+      letter-spacing: -0.065em;
+      font-weight: 850;
+    }
+
+    h2 {
+      max-width: 960px;
+      margin-bottom: 18px;
+      font-size: clamp(2.2rem, 5vw, 4.8rem);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      font-weight: 820;
+    }
+
+    h3 {
+      margin-bottom: 8px;
+      font-size: 1rem;
+      letter-spacing: -0.015em;
+    }
+
+    .lede {
+      max-width: 820px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 2.05vw, 1.45rem);
+      line-height: 1.55;
+    }
+
+    .gradient-text {
+      color: transparent;
+      background: linear-gradient(100deg, #ffffff 8%, var(--cyan) 48%, var(--violet) 92%);
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+      gap: clamp(38px, 7vw, 100px);
+      align-items: center;
+    }
+
+    .hero-mark {
+      position: relative;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+    }
+
+    .orbit {
+      position: absolute;
+      inset: 4%;
+      border: 1px solid rgba(156, 140, 255, 0.34);
+      border-radius: 50%;
+      animation: spin 24s linear infinite;
+    }
+
+    .orbit:nth-child(2) {
+      inset: 16%;
+      border-color: rgba(99, 217, 255, 0.27);
+      animation-direction: reverse;
+      animation-duration: 18s;
+    }
+
+    .orbit::after {
+      content: "";
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      top: 10%;
+      left: 15%;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 26px var(--cyan);
+    }
+
+    .orbit:nth-child(2)::after {
+      top: auto;
+      left: auto;
+      right: 8%;
+      bottom: 19%;
+      background: var(--violet);
+      box-shadow: 0 0 26px var(--violet);
+    }
+
+    .feature-core {
+      position: relative;
+      width: 58%;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.17);
+      border-radius: 29%;
+      background: linear-gradient(145deg, rgba(116, 92, 255, 0.3), rgba(99, 217, 255, 0.08));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), var(--shadow);
+      transform: rotate(8deg);
+    }
+
+    .feature-core span {
+      transform: rotate(-8deg);
+      font-size: clamp(2.5rem, 6vw, 5.7rem);
+      font-weight: 900;
+      letter-spacing: -0.08em;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hero-meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 34px;
+    }
+
+    .tag {
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #dce1f3;
+      background: rgba(255, 255, 255, 0.045);
+      font-size: 0.8rem;
+      font-weight: 720;
+    }
+
+    .statement {
+      max-width: 1040px;
+      font-size: clamp(2.15rem, 5.3vw, 5.2rem);
+      line-height: 1.06;
+      letter-spacing: -0.052em;
+      font-weight: 780;
+    }
+
+    .statement em {
+      color: var(--cyan);
+      font-style: normal;
+    }
+
+    .principle-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 52px;
+    }
+
+    .principle {
+      min-height: 145px;
+      padding: 21px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--panel);
+    }
+
+    .principle strong {
+      display: block;
+      margin-bottom: 22px;
+      color: var(--cyan);
+      font-size: 0.76rem;
+      letter-spacing: 0.16em;
+    }
+
+    .principle p {
+      margin-bottom: 0;
+      color: var(--muted);
+      line-height: 1.48;
+    }
+
+    .diagram-shell {
+      margin-top: 34px;
+      padding: clamp(18px, 3vw, 30px);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: rgba(10, 12, 22, 0.82);
+      box-shadow: var(--shadow);
+    }
+
+    .diagram-controls {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .diagram-controls button {
+      padding: 8px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .diagram-controls button[aria-pressed="true"] {
+      color: var(--ink);
+      border-color: rgba(99, 217, 255, 0.42);
+      background: rgba(99, 217, 255, 0.11);
+    }
+
+    .architecture-map {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 78px 1fr;
+      grid-template-rows: auto auto;
+      gap: 22px 14px;
+      align-items: stretch;
+    }
+
+    .lane {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--panel);
+      transition: opacity 200ms ease, filter 200ms ease, transform 200ms ease;
+    }
+
+    .lane.backend { grid-column: 1; grid-row: 1 / span 2; }
+    .lane.frontend { grid-column: 3; grid-row: 1 / span 2; }
+
+    .lane-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      font-weight: 800;
+    }
+
+    .lane-title i {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--violet);
+      box-shadow: 0 0 16px var(--violet);
+    }
+
+    .frontend .lane-title i {
+      background: var(--cyan);
+      box-shadow: 0 0 16px var(--cyan);
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: 1fr 22px 1fr 22px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .flow-node {
+      min-height: 112px;
+      padding: 15px 12px;
+      display: grid;
+      align-content: center;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.045);
+      text-align: center;
+    }
+
+    .flow-node b {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.88rem;
+    }
+
+    .flow-node small {
+      color: var(--faint);
+      font-size: 0.7rem;
+      line-height: 1.35;
+    }
+
+    .arrow {
+      position: relative;
+      height: 1px;
+      background: var(--faint);
+    }
+
+    .arrow::after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: -3px;
+      width: 6px;
+      height: 6px;
+      border-top: 1px solid var(--faint);
+      border-right: 1px solid var(--faint);
+      transform: rotate(45deg);
+    }
+
+    .feature-spine {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      display: grid;
+      place-items: center;
+      min-height: 270px;
+    }
+
+    .feature-pill {
+      height: 100%;
+      min-height: 248px;
+      width: 66px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(116, 92, 255, 0.35), rgba(99, 217, 255, 0.22));
+      box-shadow: 0 0 36px rgba(116, 92, 255, 0.2);
+    }
+
+    .feature-pill span {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-size: 0.74rem;
+      font-weight: 850;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+    }
+
+    .map-caption {
+      margin: 18px 4px 0;
+      color: var(--muted);
+      font-size: 0.89rem;
+      line-height: 1.5;
+    }
+
+    .architecture-map[data-focus="backend"] .frontend,
+    .architecture-map[data-focus="frontend"] .backend {
+      opacity: 0.26;
+      filter: grayscale(0.8);
+      transform: scale(0.985);
+    }
+
+    .extension-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.75fr) minmax(0, 1.25fr);
+      gap: 28px;
+      margin-top: 36px;
+      align-items: stretch;
+    }
+
+    .file-tree, .pipeline {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--panel);
+    }
+
+    .file-tree {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.82rem;
+      line-height: 1.9;
+      color: var(--muted);
+    }
+
+    .file-tree .folder { color: var(--cyan); }
+    .file-tree .important { color: var(--ink); }
+    .file-tree .quiet { color: var(--faint); }
+
+    .pipeline {
+      display: grid;
+      gap: 10px;
+    }
+
+    .pipeline-step {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 1px solid transparent;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .pipeline-step .number {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(156, 140, 255, 0.15);
+      color: var(--violet);
+      font-weight: 850;
+      font-size: 0.8rem;
+    }
+
+    .pipeline-step p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.35;
+    }
+
+    .owner {
+      color: var(--faint);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .slot-stage {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 30px;
+      margin-top: 34px;
+      align-items: center;
+    }
+
+    .slot-explainer {
+      display: grid;
+      gap: 14px;
+    }
+
+    .slot-point {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .slot-point .icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(99, 217, 255, 0.11);
+      color: var(--cyan);
+      font-weight: 900;
+    }
+
+    .slot-point p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.48;
+    }
+
+    .shell-window {
+      position: relative;
+      min-height: 480px;
+      padding: 50px 18px 18px 134px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 24px;
+      background: #121522;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .shell-window::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 34px;
+      border-bottom: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 17px 17px, var(--rose) 0 4px, transparent 5px),
+        radial-gradient(circle at 34px 17px, var(--amber) 0 4px, transparent 5px),
+        radial-gradient(circle at 51px 17px, var(--mint) 0 4px, transparent 5px);
+    }
+
+    .shell-window::after {
+      content: "APP SHELL";
+      position: absolute;
+      inset: 34px auto 0 0;
+      width: 112px;
+      padding-top: 24px;
+      border-right: 1px solid var(--line);
+      color: var(--faint);
+      font-size: 0.62rem;
+      font-weight: 850;
+      letter-spacing: 0.14em;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .slot-box {
+      position: relative;
+      display: grid;
+      place-items: center;
+      border: 1px dashed rgba(99, 217, 255, 0.52);
+      border-radius: 15px;
+      color: var(--cyan);
+      background: rgba(99, 217, 255, 0.06);
+      font-size: 0.72rem;
+      font-weight: 850;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .slot-box::before {
+      content: attr(data-contribution);
+      position: absolute;
+      right: 9px;
+      top: 8px;
+      padding: 4px 7px;
+      border-radius: 7px;
+      color: var(--ink);
+      background: rgba(116, 92, 255, 0.3);
+      font-size: 0.56rem;
+      letter-spacing: 0.04em;
+      text-transform: none;
+    }
+
+    .slot-header { height: 52px; margin-bottom: 12px; }
+    .slot-assistant { height: 110px; margin-bottom: 12px; }
+    .slot-content { height: 176px; }
+    .slot-actions {
+      position: absolute;
+      right: 34px;
+      bottom: 52px;
+      width: 150px;
+      height: 48px;
+      border-color: rgba(92, 224, 182, 0.62);
+      color: var(--mint);
+      background: rgba(92, 224, 182, 0.08);
+    }
+
+    .contract-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 36px;
+    }
+
+    .contract-card {
+      position: relative;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--panel);
+      overflow: hidden;
+    }
+
+    .contract-card::after {
+      content: "";
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      right: -52px;
+      bottom: -60px;
+      border-radius: 50%;
+      background: var(--accent, var(--violet));
+      filter: blur(42px);
+      opacity: 0.18;
+    }
+
+    .contract-card:nth-child(2) { --accent: var(--cyan); }
+    .contract-card:nth-child(3) { --accent: var(--mint); }
+
+    .contract-card .label {
+      color: var(--accent, var(--violet));
+      font-size: 0.7rem;
+      font-weight: 850;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .contract-card h3 {
+      margin-top: 18px;
+      font-size: 1.22rem;
+    }
+
+    .contract-card p {
+      margin-bottom: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.9rem;
+    }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .benefit {
+      min-height: 174px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--panel);
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .benefit:hover {
+      transform: translateY(-4px);
+      border-color: rgba(99, 217, 255, 0.34);
+      background: var(--panel-strong);
+    }
+
+    .benefit .benefit-number {
+      display: block;
+      margin-bottom: 30px;
+      color: var(--faint);
+      font-size: 0.68rem;
+      font-weight: 850;
+      letter-spacing: 0.13em;
+    }
+
+    .benefit p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.43;
+    }
+
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 70px 1fr;
+      gap: 18px;
+      margin-top: 38px;
+      align-items: center;
+    }
+
+    .comparison-panel {
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--panel);
+    }
+
+    .comparison-panel.aifa {
+      border-color: rgba(99, 217, 255, 0.34);
+      background: linear-gradient(145deg, rgba(99, 217, 255, 0.08), rgba(116, 92, 255, 0.09));
+    }
+
+    .comparison-panel ul {
+      list-style: none;
+      padding: 0;
+      margin: 22px 0 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .comparison-panel li {
+      position: relative;
+      padding-left: 24px;
+      color: var(--muted);
+      line-height: 1.42;
+    }
+
+    .comparison-panel li::before {
+      content: "×";
+      position: absolute;
+      left: 0;
+      color: var(--rose);
+      font-weight: 900;
+    }
+
+    .comparison-panel.aifa li::before {
+      content: "✓";
+      color: var(--mint);
+    }
+
+    .versus {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      margin: auto;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--faint);
+      font-size: 0.7rem;
+      font-weight: 900;
+      background: var(--page-alt);
+    }
+
+    .guardrail-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 42px;
+    }
+
+    .guardrail {
+      min-height: 140px;
+      padding: 18px;
+      border-top: 2px solid var(--accent, var(--violet));
+      background: linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.025));
+    }
+
+    .guardrail:nth-child(2) { --accent: var(--cyan); }
+    .guardrail:nth-child(3) { --accent: var(--mint); }
+    .guardrail:nth-child(4) { --accent: var(--amber); }
+    .guardrail:nth-child(5) { --accent: var(--rose); }
+
+    .guardrail p {
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.42;
+    }
+
+    .finale {
+      text-align: center;
+    }
+
+    .finale h2 {
+      max-width: 1020px;
+      margin-inline: auto;
+    }
+
+    .finale .lede {
+      margin-inline: auto;
+    }
+
+    .final-line {
+      display: inline-flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 46px;
+      padding: 13px 18px;
+      border: 1px solid rgba(99, 217, 255, 0.25);
+      border-radius: 999px;
+      color: #dcefff;
+      background: rgba(99, 217, 255, 0.08);
+      font-size: 0.86rem;
+      font-weight: 740;
+    }
+
+    .final-line i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 14px var(--mint);
+    }
+
+    .slide-number {
+      position: absolute;
+      left: clamp(28px, 4vw, 64px);
+      bottom: 24px;
+      color: var(--faint);
+      font-size: 0.7rem;
+      font-weight: 750;
+      letter-spacing: 0.12em;
+    }
+
+    .keyboard-hint {
+      position: fixed;
+      left: 20px;
+      top: 20px;
+      z-index: 40;
+      color: rgba(255, 255, 255, 0.42);
+      font-size: 0.67rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 900px) {
+      html { scroll-snap-type: none; }
+      .slide { min-height: auto; padding-block: 82px; overflow: visible; }
+      .hero-grid, .extension-grid, .slot-stage { grid-template-columns: 1fr; }
+      .hero-mark { max-width: 420px; margin: 0 auto; width: 100%; }
+      .principle-row, .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+      .architecture-map { grid-template-columns: 1fr; grid-template-rows: auto auto auto; }
+      .lane.backend, .lane.frontend, .feature-spine { grid-column: 1; grid-row: auto; }
+      .feature-spine { min-height: 62px; }
+      .feature-pill { width: 100%; height: 54px; min-height: 54px; }
+      .feature-pill span { writing-mode: horizontal-tb; transform: none; }
+      .shell-window { min-height: 430px; }
+      .contract-grid { grid-template-columns: 1fr; }
+      .guardrail-row { grid-template-columns: repeat(2, 1fr); }
+      .comparison { grid-template-columns: 1fr; }
+      .versus { margin-block: -4px; }
+      .deck-nav, .keyboard-hint { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .slide { padding: 68px 20px; }
+      .principle-row, .benefits-grid, .guardrail-row { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr; }
+      .arrow { width: 1px; height: 18px; margin: 0 auto; }
+      .arrow::after { right: -3px; top: auto; bottom: -1px; transform: rotate(135deg); }
+      .shell-window { padding-left: 78px; }
+      .shell-window::after { width: 62px; font-size: 0.5rem; }
+      .slot-actions { right: 26px; width: 120px; }
+      .pipeline-step { grid-template-columns: 34px 1fr; }
+      .owner { grid-column: 2; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+    }
+
+    @media print {
+      :root { color-scheme: light; --ink: #111426; --muted: #4e5876; --faint: #66708c; --line: rgba(17,20,38,.15); --panel: rgba(17,20,38,.04); --page: #fff; --page-alt: #fff; }
+      body { background: #fff; }
+      .slide { min-height: 100vh; page-break-after: always; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .deck-nav, .deck-progress, .keyboard-hint, .diagram-controls { display: none; }
+      .diagram-shell, .shell-window { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck-progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <div class="keyboard-hint">Use ↑ ↓ or space</div>
+  <nav class="deck-nav" id="deckNav" aria-label="Presentation slides"></nav>
+
+  <main>
+    <section class="slide" id="slide-1" data-title="AIFA">
+      <div class="slide-inner hero-grid">
+        <div>
+          <p class="eyebrow">AI Atomic Feature Architecture</p>
+          <h1><span class="gradient-text">Extend without unraveling.</span></h1>
+          <p class="lede">AIFA turns every capability into a small, explicit feature contract—composed through governed backend capabilities and typed frontend UI slots.</p>
+          <div class="hero-meta" aria-label="Key architecture qualities">
+            <span class="tag">Feature modules</span>
+            <span class="tag">Capability boundaries</span>
+            <span class="tag">UI slots</span>
+            <span class="tag">AI-friendly contracts</span>
+          </div>
+        </div>
+        <div class="hero-mark" aria-label="A feature at the center of composable architecture">
+          <div class="orbit"></div>
+          <div class="orbit"></div>
+          <div class="feature-core"><span>F</span></div>
+        </div>
+      </div>
+      <span class="slide-number">01 / 09</span>
+    </section>
+
+    <section class="slide" id="slide-2" data-title="The idea">
+      <div class="slide-inner">
+        <p class="eyebrow">The core idea</p>
+        <div class="statement">A feature carries everything needed to understand and extend one behavior—<em>without learning the whole application first.</em></div>
+        <div class="principle-row">
+          <article class="principle"><strong>01 · CONTRACT</strong><p>Inputs, outputs, failures, capabilities, routes, tools, events, and slots are explicit.</p></article>
+          <article class="principle"><strong>02 · ISOLATION</strong><p>Business logic stays inside its bounded context and does not import infrastructure.</p></article>
+          <article class="principle"><strong>03 · DISCOVERY</strong><p>Features register locally; generic composition discovers them rather than maintaining product lists.</p></article>
+          <article class="principle"><strong>04 · GOVERNANCE</strong><p>Every HTTP, MCP, and UI path reaches the same governed feature boundary.</p></article>
+        </div>
+      </div>
+      <span class="slide-number">02 / 09</span>
+    </section>
+
+    <section class="slide" id="slide-3" data-title="Architecture map">
+      <div class="slide-inner">
+        <p class="eyebrow">One feature · two composition paths</p>
+        <h2>Backend and frontend extend independently—through the same feature boundary.</h2>
+        <div class="diagram-shell">
+          <div class="diagram-controls" role="group" aria-label="Highlight an architecture path">
+            <button type="button" data-focus="all" aria-pressed="true">Full architecture</button>
+            <button type="button" data-focus="backend" aria-pressed="false">Backend path</button>
+            <button type="button" data-focus="frontend" aria-pressed="false">Frontend path</button>
+          </div>
+          <div class="architecture-map" id="architectureMap" data-focus="all">
+            <div class="lane backend">
+              <div class="lane-title"><i></i> Backend extension path</div>
+              <div class="flow">
+                <div class="flow-node"><b>HTTP / MCP</b><small>Transport adapts requests into one contract</small></div>
+                <div class="arrow"></div>
+                <div class="flow-node"><b>AIFA runtime</b><small>Validates actor, metadata, and granted capabilities</small></div>
+                <div class="arrow"></div>
+                <div class="flow-node"><b>Capabilities</b><small>Tenant-bound persistence, AI, clock, audit, events</small></div>
+              </div>
+            </div>
+            <div class="feature-spine"><div class="feature-pill"><span>Feature contract</span></div></div>
+            <div class="lane frontend">
+              <div class="lane-title"><i></i> Frontend extension path</div>
+              <div class="flow">
+                <div class="flow-node"><b>Feature UI</b><small>Own view, interaction, and local state</small></div>
+                <div class="arrow"></div>
+                <div class="flow-node"><b>Slot registry</b><small>Discovers, orders, and types contributions</small></div>
+                <div class="arrow"></div>
+                <div class="flow-node"><b>App shell</b><small>Layout and composition—not product behavior</small></div>
+              </div>
+            </div>
+          </div>
+          <p class="map-caption">The feature is the stable center. Transport, infrastructure, and shell layout remain replaceable adapters around it.</p>
+        </div>
+      </div>
+      <span class="slide-number">03 / 09</span>
+    </section>
+
+    <section class="slide" id="slide-4" data-title="Backend extension">
+      <div class="slide-inner">
+        <p class="eyebrow">Backend extension</p>
+        <h2>Add behavior locally. Let the platform compose it.</h2>
+        <p class="lede">A new backend feature declares what it needs; the runtime supplies only those capabilities. Infrastructure never leaks into feature logic.</p>
+        <div class="extension-grid">
+          <div class="file-tree" aria-label="Example AIFA feature folder">
+            <span class="folder">contexts/task-management/</span><br />
+            └── <span class="folder">features/archive-task/</span><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="important">feature.definition.json</span><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="important">manifest.ts</span><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="folder">contracts/</span><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── input.schema.json<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── output.schema.json<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="folder">backend/</span><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── feature.ts<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="folder">frontend/</span><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── contribution.tsx<br />
+            <span class="quiet"># one folder = one change surface</span>
+          </div>
+          <div class="pipeline">
+            <div class="pipeline-step"><span class="number">1</span><div><b>Declare the contract</b><p>Input, output, failures, route, MCP tool, scopes, idempotency, and events.</p></div><span class="owner">Feature</span></div>
+            <div class="pipeline-step"><span class="number">2</span><div><b>Implement pure orchestration</b><p>Use actor, metadata, and named capabilities—never MongoDB, HTTP, or provider SDKs.</p></div><span class="owner">Feature</span></div>
+            <div class="pipeline-step"><span class="number">3</span><div><b>Discover and validate</b><p>Composition finds the manifest, validates contracts, routes, dependencies, and duplicates.</p></div><span class="owner">Core</span></div>
+            <div class="pipeline-step"><span class="number">4</span><div><b>Bind governed capabilities</b><p>The runtime supplies tenant-safe adapters for storage, audit, events, AI, IDs, and clocks.</p></div><span class="owner">Runtime</span></div>
+            <div class="pipeline-step"><span class="number">5</span><div><b>Expose everywhere consistently</b><p>HTTP and MCP invoke the same feature, validation, authorization, and audit path.</p></div><span class="owner">Adapters</span></div>
+          </div>
+        </div>
+      </div>
+      <span class="slide-number">04 / 09</span>
+    </section>
+
+    <section class="slide" id="slide-5" data-title="Frontend slots">
+      <div class="slide-inner">
+        <p class="eyebrow">Frontend extension with UI slots</p>
+        <h2>The shell owns the where. Features own the what.</h2>
+        <div class="slot-stage">
+          <div class="slot-explainer">
+            <div class="slot-point"><span class="icon">1</span><div><h3>The shell publishes named slots</h3><p>Examples: AppHeader, AppContent, AssistantPanel, TaskComposer, and TaskRowActions.</p></div></div>
+            <div class="slot-point"><span class="icon">2</span><div><h3>Each slot has a small typed model</h3><p>A contribution receives only the data and commands that extension point promises.</p></div></div>
+            <div class="slot-point"><span class="icon">3</span><div><h3>Features register contributions locally</h3><p>Discovery loads them deterministically; ordering is metadata, not a central import list.</p></div></div>
+            <div class="slot-point"><span class="icon">4</span><div><h3>Composition stays open</h3><p>Add, replace, reorder, or remove feature UI without rewriting the application shell.</p></div></div>
+          </div>
+          <div class="shell-window" aria-label="App shell containing feature-provided UI slots">
+            <div class="slot-box slot-header" data-contribution="identity-header">AppHeader slot</div>
+            <div class="slot-box slot-assistant" data-contribution="task-plan-review">AssistantPanel slot</div>
+            <div class="slot-box slot-content" data-contribution="task-dashboard">AppContent slot</div>
+            <div class="slot-box slot-actions" data-contribution="status + delete">RowActions slot</div>
+          </div>
+        </div>
+      </div>
+      <span class="slide-number">05 / 09</span>
+    </section>
+
+    <section class="slide" id="slide-6" data-title="Why contracts matter">
+      <div class="slide-inner">
+        <p class="eyebrow">Why the feature contract matters</p>
+        <h2>One source of intent serves humans, runtime, and AI agents.</h2>
+        <div class="contract-grid">
+          <article class="contract-card">
+            <span class="label">For developers</span>
+            <h3>Local reasoning</h3>
+            <p>The folder explains what the feature does, what it consumes, what it emits, and where it appears. Less archaeology, fewer hidden conventions.</p>
+          </article>
+          <article class="contract-card">
+            <span class="label">For the platform</span>
+            <h3>Executable governance</h3>
+            <p>Validation, authorization, tenancy, idempotency, capability access, auditing, and events can be enforced consistently at one boundary.</p>
+          </article>
+          <article class="contract-card">
+            <span class="label">For AI agents</span>
+            <h3>Bounded context windows</h3>
+            <p>An agent can plan, implement, test, or review one feature using explicit machine-readable contracts—without guessing the rest of the system.</p>
+          </article>
+        </div>
+      </div>
+      <span class="slide-number">06 / 09</span>
+    </section>
+
+    <section class="slide" id="slide-7" data-title="Benefits">
+      <div class="slide-inner">
+        <p class="eyebrow">Benefits</p>
+        <h2>Modularity that improves delivery—not just folder structure.</h2>
+        <div class="benefits-grid">
+          <article class="benefit"><span class="benefit-number">01</span><h3>Easy extension</h3><p>Add a feature slice and contribution; generic discovery handles composition.</p></article>
+          <article class="benefit"><span class="benefit-number">02</span><h3>Low coupling</h3><p>Features depend on contracts and capabilities, not concrete infrastructure or peers.</p></article>
+          <article class="benefit"><span class="benefit-number">03</span><h3>Independent testing</h3><p>Run behavior with small capability fakes, then contract-test adapters separately.</p></article>
+          <article class="benefit"><span class="benefit-number">04</span><h3>Replaceable adapters</h3><p>Swap MongoDB, AI providers, auth, HTTP, or MCP without rewriting feature logic.</p></article>
+          <article class="benefit"><span class="benefit-number">05</span><h3>Consistent channels</h3><p>Browser and AI clients use the same validation, permissions, business rules, and audit trail.</p></article>
+          <article class="benefit"><span class="benefit-number">06</span><h3>Parallel delivery</h3><p>Teams and agents work in separate feature folders with fewer shared-file conflicts.</p></article>
+          <article class="benefit"><span class="benefit-number">07</span><h3>Safer AI changes</h3><p>Explicit scope, dependencies, contracts, and acceptance criteria constrain automated work.</p></article>
+          <article class="benefit"><span class="benefit-number">08</span><h3>Evolution by addition</h3><p>New capabilities and UI appear through extension points instead of repeated core rewrites.</p></article>
+        </div>
+      </div>
+      <span class="slide-number">07 / 09</span>
+    </section>
+
+    <section class="slide" id="slide-8" data-title="The difference">
+      <div class="slide-inner">
+        <p class="eyebrow">The practical difference</p>
+        <h2>From coordinated edits to a governed extension.</h2>
+        <div class="comparison">
+          <article class="comparison-panel">
+            <h3>Traditional feature addition</h3>
+            <ul>
+              <li>Edit route registries, services, repositories, screens, and shared state.</li>
+              <li>Copy security and error handling into another execution path.</li>
+              <li>Understand transitive dependencies before making a safe change.</li>
+              <li>Coordinate shared files and resolve recurring merge conflicts.</li>
+            </ul>
+          </article>
+          <div class="versus">VS</div>
+          <article class="comparison-panel aifa">
+            <h3>AIFA feature addition</h3>
+            <ul>
+              <li>Add one local slice containing contract, behavior, UI, and tests.</li>
+              <li>Declare capabilities, scopes, events, routes, tools, and slots explicitly.</li>
+              <li>Let discovery and architecture validation compose the feature.</li>
+              <li>Reuse the same governed operation across browser and AI clients.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+      <span class="slide-number">08 / 09</span>
+    </section>
+
+    <section class="slide" id="slide-9" data-title="Guardrails">
+      <div class="slide-inner finale">
+        <p class="eyebrow">The condition for success</p>
+        <h2><span class="gradient-text">AIFA works when the boundaries are executable—not merely documented.</span></h2>
+        <p class="lede">The architecture remains easy to extend because automated guardrails keep every new feature honest.</p>
+        <div class="guardrail-row">
+          <article class="guardrail"><h3>Contract validation</h3><p>Validate every input, output, event, and MCP tool shape at runtime.</p></article>
+          <article class="guardrail"><h3>Dependency rules</h3><p>Reject core-to-product, feature-to-feature, and cross-context implementation imports.</p></article>
+          <article class="guardrail"><h3>Typed slots</h3><p>Bind every slot name to a precise model and fail contribution drift in CI.</p></article>
+          <article class="guardrail"><h3>Bound capabilities</h3><p>Grant only declared operations and bind actor, tenant, transaction, and audit centrally.</p></article>
+          <article class="guardrail"><h3>Parity tests</h3><p>Prove HTTP, MCP, and UI adapters reach the same feature behavior and safety checks.</p></article>
+        </div>
+        <div class="final-line"><i></i> Small features · explicit contracts · safe composition</div>
+      </div>
+      <span class="slide-number">09 / 09</span>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const slides = [...document.querySelectorAll('.slide')];
+      const nav = document.getElementById('deckNav');
+      const progressBar = document.getElementById('progressBar');
+      const map = document.getElementById('architectureMap');
+      let activeIndex = 0;
+
+      slides.forEach((slide, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.setAttribute('aria-label', `Go to slide ${index + 1}: ${slide.dataset.title}`);
+        button.setAttribute('aria-current', index === 0 ? 'true' : 'false');
+        button.addEventListener('click', () => slide.scrollIntoView({ behavior: 'smooth' }));
+        nav.appendChild(button);
+      });
+
+      const navButtons = [...nav.querySelectorAll('button')];
+      const setActive = (index) => {
+        activeIndex = index;
+        navButtons.forEach((button, buttonIndex) => {
+          button.setAttribute('aria-current', buttonIndex === index ? 'true' : 'false');
+        });
+        progressBar.style.width = `${((index + 1) / slides.length) * 100}%`;
+        document.title = `${slides[index].dataset.title} — AIFA`;
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActive(slides.indexOf(visible.target));
+      }, { threshold: [0.45, 0.6, 0.75] });
+
+      slides.forEach((slide) => observer.observe(slide));
+      setActive(0);
+
+      document.addEventListener('keydown', (event) => {
+        const nextKeys = ['ArrowDown', 'ArrowRight', 'PageDown', ' '];
+        const previousKeys = ['ArrowUp', 'ArrowLeft', 'PageUp'];
+        if (nextKeys.includes(event.key)) {
+          event.preventDefault();
+          slides[Math.min(activeIndex + 1, slides.length - 1)].scrollIntoView({ behavior: 'smooth' });
+        } else if (previousKeys.includes(event.key)) {
+          event.preventDefault();
+          slides[Math.max(activeIndex - 1, 0)].scrollIntoView({ behavior: 'smooth' });
+        } else if (event.key === 'Home') {
+          event.preventDefault();
+          slides[0].scrollIntoView({ behavior: 'smooth' });
+        } else if (event.key === 'End') {
+          event.preventDefault();
+          slides[slides.length - 1].scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+
+      document.querySelectorAll('.diagram-controls button').forEach((button) => {
+        button.addEventListener('click', () => {
+          const focus = button.dataset.focus;
+          map.dataset.focus = focus;
+          document.querySelectorAll('.diagram-controls button').forEach((item) => {
+            item.setAttribute('aria-pressed', item === button ? 'true' : 'false');
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

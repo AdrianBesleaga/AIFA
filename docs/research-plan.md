@@ -36,17 +36,17 @@ Define:
 - event
 - boundary
 
-## Phase 3: Reference Runtime
+## Phase 3: Reference Application
 
-Build a small runtime that supports:
+Use [Focusly](../demo/ai-todo-assistant/README.md) as the production-style reference application. It currently demonstrates:
 
-- feature registration
-- input validation
-- capability allowlists
-- test runtime adapters
-- production runtime adapters
-- structured execution results
-- audit trails
+- dynamic backend, frontend, and MCP feature registration;
+- JSON Schema validation and generated contract types;
+- capability allowlists and runtime adapters;
+- typed execution results;
+- tenant-scoped persistence, authorization, audit, idempotency, and outbox behavior;
+- typed React slot composition and feature-local hooks;
+- architecture, behavioral, boundary, and integration tests.
 
 ## Phase 4: Evaluation
 

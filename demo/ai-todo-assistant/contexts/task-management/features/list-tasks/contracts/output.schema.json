@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ListTasksOutputV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["tasks"],
+  "properties": {
+    "tasks": {
+      "type": "array",
+      "items": { "$ref": "https://aifa.dev/task-management/contracts/v1/task-view.schema.json" }
+    },
+    "nextCursor": { "type": "string" }
+  }
+}

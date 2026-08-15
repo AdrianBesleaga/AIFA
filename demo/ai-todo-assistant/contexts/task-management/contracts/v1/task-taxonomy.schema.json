@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aifa.dev/task-management/contracts/v1/task-taxonomy.schema.json",
+  "title": "Task Management Taxonomy V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["category", "priority", "status"],
+  "properties": {
+    "category": { "enum": ["Work", "Personal", "Sport", "Shopping", "Other"] },
+    "priority": { "enum": ["Low", "Medium", "High"] },
+    "status": { "enum": ["Todo", "InProgress", "Completed"] }
+  }
+}

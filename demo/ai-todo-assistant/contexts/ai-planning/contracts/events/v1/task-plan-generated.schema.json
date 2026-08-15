@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TaskPlanGeneratedV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventId",
+    "eventType",
+    "schemaVersion",
+    "tenantId",
+    "actorId",
+    "correlationId",
+    "causationId",
+    "idempotencyKey",
+    "planId",
+    "occurredAt"
+  ],
+  "properties": {
+    "eventId": { "type": "string" },
+    "eventType": { "const": "TaskPlanGeneratedV1" },
+    "schemaVersion": { "const": 1 },
+    "tenantId": { "type": "string" },
+    "actorId": { "type": "string" },
+    "correlationId": { "type": "string" },
+    "causationId": { "type": "string" },
+    "idempotencyKey": { "type": "string" },
+    "planId": { "type": "string" },
+    "occurredAt": { "type": "string", "format": "date-time" }
+  }
+}

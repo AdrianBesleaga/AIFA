@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
+  <title id="title">AIFA system overview</title>
+  <desc id="description">A central feature contract connects governed backend adapters and capabilities with frontend feature contributions and typed UI slots.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#090b13"/>
+      <stop offset="1" stop-color="#111528"/>
+    </linearGradient>
+    <linearGradient id="featureGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#745cff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#63d9ff" stop-opacity="0.28"/>
+    </linearGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="15" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#68718e"/>
+    </marker>
+    <style>
+      .heading { fill: #f7f8ff; font-family: Inter, Arial, sans-serif; font-size: 50px; font-weight: 800; letter-spacing: -1.8px; }
+      .eyebrow { fill: #63d9ff; font-family: Inter, Arial, sans-serif; font-size: 17px; font-weight: 800; letter-spacing: 3px; }
+      .lane-title { fill: #f7f8ff; font-family: Inter, Arial, sans-serif; font-size: 22px; font-weight: 750; }
+      .node-title { fill: #f7f8ff; font-family: Inter, Arial, sans-serif; font-size: 18px; font-weight: 750; }
+      .node-copy { fill: #a8afc7; font-family: Inter, Arial, sans-serif; font-size: 14px; font-weight: 400; }
+      .feature-label { fill: #f7f8ff; font-family: Inter, Arial, sans-serif; font-size: 20px; font-weight: 850; letter-spacing: 3px; }
+      .caption { fill: #a8afc7; font-family: Inter, Arial, sans-serif; font-size: 18px; font-weight: 400; }
+      .panel { fill: #ffffff; fill-opacity: 0.045; stroke: #ffffff; stroke-opacity: 0.13; }
+      .node { fill: #ffffff; fill-opacity: 0.045; stroke: #ffffff; stroke-opacity: 0.13; }
+      .connector { stroke: #68718e; stroke-width: 2; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#background)"/>
+  <circle cx="1450" cy="70" r="330" fill="#745cff" opacity="0.08"/>
+  <circle cx="120" cy="860" r="330" fill="#63d9ff" opacity="0.055"/>
+
+  <text x="100" y="90" class="eyebrow">AI ATOMIC FEATURE ARCHITECTURE</text>
+  <text x="100" y="151" class="heading">One feature. Two extension paths.</text>
+  <text x="100" y="190" class="caption">The feature contract is the stable center; transport, infrastructure, and shell layout remain replaceable.</text>
+
+  <rect x="90" y="246" width="650" height="470" rx="30" class="panel"/>
+  <rect x="860" y="246" width="650" height="470" rx="30" class="panel"/>
+  <circle cx="132" cy="291" r="7" fill="#9c8cff" filter="url(#glow)"/>
+  <circle cx="902" cy="291" r="7" fill="#63d9ff" filter="url(#glow)"/>
+  <text x="154" y="299" class="lane-title">Backend extension path</text>
+  <text x="924" y="299" class="lane-title">Frontend extension path</text>
+
+  <rect x="122" y="354" width="168" height="195" rx="22" class="node"/>
+  <text x="206" y="404" text-anchor="middle" class="node-title">HTTP / MCP</text>
+  <text x="206" y="439" text-anchor="middle" class="node-copy">Transport adapts</text>
+  <text x="206" y="462" text-anchor="middle" class="node-copy">untrusted requests</text>
+  <text x="206" y="485" text-anchor="middle" class="node-copy">into one contract</text>
+
+  <line x1="303" y1="451" x2="346" y2="451" class="connector"/>
+
+  <rect x="360" y="354" width="168" height="195" rx="22" class="node"/>
+  <text x="444" y="404" text-anchor="middle" class="node-title">AIFA runtime</text>
+  <text x="444" y="439" text-anchor="middle" class="node-copy">Validates actor,</text>
+  <text x="444" y="462" text-anchor="middle" class="node-copy">metadata, contract,</text>
+  <text x="444" y="485" text-anchor="middle" class="node-copy">and capabilities</text>
+
+  <line x1="541" y1="451" x2="584" y2="451" class="connector"/>
+
+  <rect x="598" y="354" width="110" height="195" rx="22" class="node"/>
+  <text x="653" y="404" text-anchor="middle" class="node-title">Bound</text>
+  <text x="653" y="428" text-anchor="middle" class="node-title">capabilities</text>
+  <text x="653" y="463" text-anchor="middle" class="node-copy">Data · AI</text>
+  <text x="653" y="486" text-anchor="middle" class="node-copy">Audit · Events</text>
+
+  <rect x="892" y="354" width="168" height="195" rx="22" class="node"/>
+  <text x="976" y="404" text-anchor="middle" class="node-title">Feature UI</text>
+  <text x="976" y="439" text-anchor="middle" class="node-copy">Own view, state,</text>
+  <text x="976" y="462" text-anchor="middle" class="node-copy">interaction, and</text>
+  <text x="976" y="485" text-anchor="middle" class="node-copy">feature commands</text>
+
+  <line x1="1073" y1="451" x2="1116" y2="451" class="connector"/>
+
+  <rect x="1130" y="354" width="168" height="195" rx="22" class="node"/>
+  <text x="1214" y="404" text-anchor="middle" class="node-title">Slot registry</text>
+  <text x="1214" y="439" text-anchor="middle" class="node-copy">Discovers, types,</text>
+  <text x="1214" y="462" text-anchor="middle" class="node-copy">orders, and renders</text>
+  <text x="1214" y="485" text-anchor="middle" class="node-copy">contributions</text>
+
+  <line x1="1311" y1="451" x2="1354" y2="451" class="connector"/>
+
+  <rect x="1368" y="354" width="110" height="195" rx="22" class="node"/>
+  <text x="1423" y="404" text-anchor="middle" class="node-title">App shell</text>
+  <text x="1423" y="439" text-anchor="middle" class="node-copy">Layout</text>
+  <text x="1423" y="462" text-anchor="middle" class="node-copy">Navigation</text>
+  <text x="1423" y="485" text-anchor="middle" class="node-copy">Composition</text>
+
+  <rect x="758" y="284" width="84" height="390" rx="27" fill="url(#featureGradient)" stroke="#ffffff" stroke-opacity="0.24"/>
+  <text x="800" y="479" text-anchor="middle" class="feature-label" transform="rotate(-90 800 479)">FEATURE CONTRACT</text>
+
+  <line x1="740" y1="451" x2="758" y2="451" stroke="#9c8cff" stroke-width="3"/>
+  <line x1="842" y1="451" x2="860" y2="451" stroke="#63d9ff" stroke-width="3"/>
+
+  <rect x="122" y="590" width="586" height="84" rx="18" fill="#9c8cff" fill-opacity="0.075" stroke="#9c8cff" stroke-opacity="0.24"/>
+  <text x="148" y="624" class="node-title">Same governed operation everywhere</text>
+  <text x="148" y="650" class="node-copy">Authorization · tenancy · validation · idempotency · audit · events</text>
+
+  <rect x="892" y="590" width="586" height="84" rx="18" fill="#63d9ff" fill-opacity="0.065" stroke="#63d9ff" stroke-opacity="0.24"/>
+  <text x="918" y="624" class="node-title">Open for extension, stable in composition</text>
+  <text x="918" y="650" class="node-copy">New feature UI plugs into typed slots without rewriting the shell</text>
+
+  <text x="800" y="798" text-anchor="middle" class="heading" font-size="38">Small features · explicit contracts · safe composition</text>
+  <text x="800" y="842" text-anchor="middle" class="caption">Local reasoning for humans and AI agents, with platform-wide guardrails.</text>
+</svg>

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GenerateTaskPlanInputV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["goal", "category", "priority"],
+  "properties": {
+    "goal": { "type": "string", "minLength": 1, "maxLength": 4000 },
+    "category": { "enum": ["Work", "Personal", "Sport", "Shopping", "Other"] },
+    "priority": { "enum": ["Low", "Medium", "High"] }
+  }
+}

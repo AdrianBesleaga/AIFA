@@ -1,0 +1,30 @@
+services:
+  mongodb:
+    image: mongo:8
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+  mongo-init:
+    image: mongo:8
+    depends_on:
+      - mongodb
+    restart: "no"
+    command:
+      [
+        "mongosh",
+        "--host",
+        "mongodb:27017",
+        "--eval",
+        "rs.initiate({_id: 'rs0', members: [{_id: 0, host: 'mongodb:27017'}]})",
+      ]
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+volumes:
+  mongo-data:
+  ollama-data:

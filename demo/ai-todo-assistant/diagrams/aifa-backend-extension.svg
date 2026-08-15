@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
+  <title id="title">AIFA backend extension flow</title>
+  <desc id="description">A new feature folder is discovered and validated, invoked by HTTP or MCP through the AIFA runtime, and connected to tenant-bound infrastructure capabilities.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#090b13"/><stop offset="1" stop-color="#151127"/></linearGradient>
+    <linearGradient id="feature" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#745cff" stop-opacity="0.38"/><stop offset="1" stop-color="#9c8cff" stop-opacity="0.12"/></linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#777f9a"/></marker>
+    <style>
+      .heading { fill:#f7f8ff; font-family:Inter,Arial,sans-serif; font-size:50px; font-weight:800; letter-spacing:-1.8px }
+      .eyebrow { fill:#9c8cff; font-family:Inter,Arial,sans-serif; font-size:17px; font-weight:800; letter-spacing:3px }
+      .title { fill:#f7f8ff; font-family:Inter,Arial,sans-serif; font-size:20px; font-weight:750 }
+      .copy { fill:#a8afc7; font-family:Inter,Arial,sans-serif; font-size:14px; font-weight:400 }
+      .tiny { fill:#727b9a; font-family:Inter,Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:1px }
+      .panel { fill:#fff; fill-opacity:.045; stroke:#fff; stroke-opacity:.13 }
+      .flow { stroke:#777f9a; stroke-width:2.5; marker-end:url(#arrow) }
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="url(#background)"/>
+  <circle cx="1420" cy="120" r="350" fill="#745cff" opacity=".08"/>
+  <text x="95" y="86" class="eyebrow">BACKEND EXTENSION FLOW</text>
+  <text x="95" y="148" class="heading">Add behavior locally. Let the platform compose it.</text>
+  <text x="95" y="188" class="copy" font-size="18">The feature declares intent and capabilities; generic infrastructure handles exposure, security, and execution.</text>
+
+  <rect x="82" y="250" width="300" height="430" rx="28" fill="url(#feature)" stroke="#9c8cff" stroke-opacity=".34"/>
+  <text x="112" y="292" class="tiny">NEW FEATURE SLICE</text>
+  <text x="112" y="330" class="title">archive-task/</text>
+  <rect x="108" y="360" width="248" height="51" rx="13" class="panel"/><text x="130" y="391" class="copy">feature.definition.json</text>
+  <rect x="108" y="424" width="248" height="51" rx="13" class="panel"/><text x="130" y="455" class="copy">contracts/*.schema.json</text>
+  <rect x="108" y="488" width="248" height="51" rx="13" class="panel"/><text x="130" y="519" class="copy">backend/feature.ts</text>
+  <rect x="108" y="552" width="248" height="51" rx="13" class="panel"/><text x="130" y="583" class="copy">manifest.ts</text>
+  <text x="112" y="642" class="copy">One folder contains the change surface,</text>
+  <text x="112" y="664" class="copy">contracts, behavior, and registration.</text>
+
+  <line x1="395" y1="465" x2="457" y2="465" class="flow"/>
+
+  <rect x="473" y="250" width="245" height="430" rx="28" class="panel"/>
+  <text x="503" y="292" class="tiny">PLATFORM COMPOSITION</text>
+  <circle cx="512" cy="361" r="17" fill="#9c8cff" fill-opacity=".17"/><text x="512" y="367" text-anchor="middle" class="tiny" fill="#9c8cff">1</text>
+  <text x="545" y="359" class="title">Discover</text><text x="545" y="383" class="copy">Find local manifests</text>
+  <line x1="512" y1="391" x2="512" y2="430" stroke="#525a76" stroke-width="2"/>
+  <circle cx="512" cy="460" r="17" fill="#9c8cff" fill-opacity=".17"/><text x="512" y="466" text-anchor="middle" class="tiny" fill="#9c8cff">2</text>
+  <text x="545" y="458" class="title">Validate</text><text x="545" y="482" class="copy">Schemas · DAG · routes</text>
+  <line x1="512" y1="490" x2="512" y2="529" stroke="#525a76" stroke-width="2"/>
+  <circle cx="512" cy="559" r="17" fill="#9c8cff" fill-opacity=".17"/><text x="512" y="565" text-anchor="middle" class="tiny" fill="#9c8cff">3</text>
+  <text x="545" y="557" class="title">Register</text><text x="545" y="581" class="copy">HTTP · MCP · scopes</text>
+
+  <line x1="731" y1="465" x2="793" y2="465" class="flow"/>
+
+  <rect x="809" y="250" width="320" height="430" rx="28" class="panel"/>
+  <text x="839" y="292" class="tiny">GOVERNED INVOCATION</text>
+  <rect x="839" y="332" width="260" height="68" rx="17" fill="#63d9ff" fill-opacity=".07" stroke="#63d9ff" stroke-opacity=".26"/>
+  <text x="969" y="361" text-anchor="middle" class="title">HTTP or MCP adapter</text><text x="969" y="384" text-anchor="middle" class="copy">Same input contract</text>
+  <line x1="969" y1="400" x2="969" y2="437" class="flow"/>
+  <rect x="839" y="452" width="260" height="90" rx="17" fill="#745cff" fill-opacity=".12" stroke="#9c8cff" stroke-opacity=".30"/>
+  <text x="969" y="484" text-anchor="middle" class="title">AIFA runtime</text><text x="969" y="509" text-anchor="middle" class="copy">Actor · metadata · exact grants</text>
+  <line x1="969" y1="542" x2="969" y2="579" class="flow"/>
+  <rect x="839" y="594" width="260" height="58" rx="17" fill="#fff" fill-opacity=".045" stroke="#fff" stroke-opacity=".13"/>
+  <text x="969" y="630" text-anchor="middle" class="title">Feature.execute(context)</text>
+
+  <line x1="1142" y1="465" x2="1204" y2="465" class="flow"/>
+
+  <rect x="1220" y="250" width="298" height="430" rx="28" class="panel"/>
+  <text x="1250" y="292" class="tiny">TENANT-BOUND CAPABILITIES</text>
+  <rect x="1248" y="335" width="115" height="86" rx="16" class="panel"/><text x="1305" y="372" text-anchor="middle" class="title">Data</text><text x="1305" y="396" text-anchor="middle" class="copy">MongoDB</text>
+  <rect x="1377" y="335" width="115" height="86" rx="16" class="panel"/><text x="1434" y="372" text-anchor="middle" class="title">AI</text><text x="1434" y="396" text-anchor="middle" class="copy">Providers</text>
+  <rect x="1248" y="437" width="115" height="86" rx="16" class="panel"/><text x="1305" y="474" text-anchor="middle" class="title">Audit</text><text x="1305" y="498" text-anchor="middle" class="copy">Envelope</text>
+  <rect x="1377" y="437" width="115" height="86" rx="16" class="panel"/><text x="1434" y="474" text-anchor="middle" class="title">Events</text><text x="1434" y="498" text-anchor="middle" class="copy">Outbox</text>
+  <rect x="1248" y="539" width="244" height="86" rx="16" fill="#5ce0b6" fill-opacity=".07" stroke="#5ce0b6" stroke-opacity=".27"/>
+  <text x="1370" y="576" text-anchor="middle" class="title">Identity · clock · transaction</text>
+  <text x="1370" y="601" text-anchor="middle" class="copy">Runtime-owned cross-cutting services</text>
+
+  <rect x="82" y="746" width="1436" height="84" rx="22" fill="#5ce0b6" fill-opacity=".055" stroke="#5ce0b6" stroke-opacity=".20"/>
+  <text x="116" y="780" class="title">Why extension stays easy</text>
+  <text x="116" y="807" class="copy" font-size="16">No infrastructure imports · no hand-edited route list · no duplicated HTTP/MCP logic · small test fixtures · explicit security and event contracts</text>
+</svg>

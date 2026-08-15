@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Generated application bundles
+dist/
+
+# Local runtime data for the React + Node example
+examples/aifa-react-node-slots/data/tasks.json
+
+# Generated contract declarations
+demo/ai-todo-assistant/core/shared/generated/
+
+# Test coverage
+coverage/
+
+# Environment-specific configuration
+.env
+.env.*
+!.env.example
+
+# OS and editor files
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp

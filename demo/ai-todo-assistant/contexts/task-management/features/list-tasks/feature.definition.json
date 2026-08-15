@@ -1,0 +1,46 @@
+{
+  "$schema": "../../../../core/architecture/feature-definition.schema.json",
+  "name": "list-tasks",
+  "boundedContext": "task-management",
+  "businessNeed": "Give people and connected AI clients a single filterable source of truth for commitments across life categories.",
+  "dependsOn": [],
+  "consumesContracts": ["task-management/contracts/v1/task-cache.schema.json"],
+  "backend": {
+    "route": "/api/tasks",
+    "method": "GET",
+    "capabilities": ["TaskList"],
+    "mcp": { "exposed": true, "toolName": "list_tasks" }
+  },
+  "frontend": { "slots": ["TaskList", "AppHeader", "AppNavigation", "AppContent", "AppFooter"] },
+  "contracts": {
+    "input": "contracts/input.schema.json",
+    "output": "contracts/output.schema.json",
+    "mcpInput": "contracts/input.schema.json"
+  },
+  "events": [],
+  "security": {
+    "mutation": false,
+    "actorRequired": true,
+    "idempotent": true,
+    "requiresConfirmation": false,
+    "concurrency": "none",
+    "mcpScopes": ["TaskRead"]
+  },
+  "workItems": [
+    {
+      "id": "LST-1",
+      "description": "Define category and status filtering with enum validation.",
+      "acceptanceCriterion": "Filters accept only TaskCategory and TaskStatus values."
+    },
+    {
+      "id": "LST-2",
+      "description": "Implement the read-only AIFA feature and Mongo capability query.",
+      "acceptanceCriterion": "Results are deterministically ordered."
+    },
+    {
+      "id": "LST-3",
+      "description": "Register MUI list and summary slot contributions.",
+      "acceptanceCriterion": "The empty, filtered, and populated states render correctly."
+    }
+  ]
+}

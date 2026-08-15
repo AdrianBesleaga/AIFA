@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DeleteTaskInputV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["taskId", "expectedVersion", "confirmed"],
+  "properties": {
+    "taskId": { "type": "string", "minLength": 1 },
+    "expectedVersion": { "type": "integer", "minimum": 1 },
+    "confirmed": { "const": true }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChangeTaskStatusOutputV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task"],
+  "properties": {
+    "task": { "$ref": "https://aifa.dev/task-management/contracts/v1/task-view.schema.json" }
+  }
+}
