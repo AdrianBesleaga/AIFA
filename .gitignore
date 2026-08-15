@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Generated application bundles
+dist/
+
+# Local runtime data for the React + Node example
+examples/aifa-react-node-slots/data/tasks.json
+
+# Test coverage
+coverage/
+
+# Environment-specific configuration
+.env
+.env.*
+!.env.example
+
+# OS and editor files
+.DS_Store
+.idea/
+.vscode/
+*.swp

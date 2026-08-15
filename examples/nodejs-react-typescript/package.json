@@ -1,0 +1,30 @@
+{
+  "name": "aifa-react-node-slots",
+  "version": "0.1.0",
+  "description": "A React and Node.js example app built with AI Atomic Feature Architecture and slot-based UI contributions.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "api": "tsx backend/server.ts",
+    "dev": "vite frontend --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build frontend --outDir ../dist",
+    "start": "tsx backend/server.ts",
+    "test": "tsx --test"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.7",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.3",
+    "@types/react-dom": "^19.0.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
