@@ -17,8 +17,9 @@ export function createMemoryTaskStore(seed = []) {
       return tasks.delete(taskId);
     },
     async list() {
-      return [...tasks.values()].sort((left, right) => left.createdAt.localeCompare(right.createdAt));
+      return [...tasks.values()].sort((left, right) =>
+        left.createdAt.localeCompare(right.createdAt),
+      );
     },
   };
 }
-

@@ -37,4 +37,3 @@ Allow an actor to create one active task from the React UI.
 - Trims the title.
 - Defaults unknown priority to `medium`.
 - Rejects empty titles.
-

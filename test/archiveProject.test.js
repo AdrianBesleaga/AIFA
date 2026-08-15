@@ -78,4 +78,3 @@ test("returns not_found for missing projects", async () => {
   assert.equal(result.ok, false);
   assert.equal(result.error.code, "not_found");
 });
-

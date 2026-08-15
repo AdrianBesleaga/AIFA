@@ -2,6 +2,8 @@
 
 > **Required reading:** Follow [ARCHITECTURE.md](ARCHITECTURE.md) before adding or changing any code, feature definition, domain rule, capability, route, MCP tool, or slot contribution. It is the authoritative architecture document; this file is the contributor working agreement.
 
+> **Progress tracking:** Update [TODO.md](TODO.md) when a scoped project task is completed, added, split, or reprioritized.
+
 ## Purpose
 
 This app is a production-style demonstration of **AI Atomic Feature Architecture (AIFA)**.

@@ -21,5 +21,7 @@ coverage/
 # OS and editor files
 .DS_Store
 .idea/
-.vscode/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
 *.swp

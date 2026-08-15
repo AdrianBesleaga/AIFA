@@ -31,4 +31,3 @@ Allow an actor to delete one existing task.
 
 - Deletes an existing task.
 - Returns `not_found` for a missing task.
-

@@ -35,4 +35,3 @@ Allow an actor to complete one existing task.
 - Completes an active task.
 - Returns success for an already completed task.
 - Returns `not_found` for a missing task.
-

@@ -4,14 +4,50 @@
   "boundedContext": "task-management",
   "businessNeed": "Keep the task list useful by removing incorrect or obsolete commitments with explicit user confirmation.",
   "dependsOn": [],
-  "consumesContracts": [],
-  "backend": { "route": "/api/tasks/:taskId", "method": "DELETE", "capabilities": ["TaskLoad", "TaskDelete", "AuditRecord"], "mcp": { "exposed": true, "toolName": "delete_task" } },
-  "frontend": { "slots": ["TaskRowActions"] },
-  "contracts": { "input": "contracts/input.schema.json", "output": "contracts/output.schema.json", "mcpInput": "contracts/input.schema.json" },
+  "consumesContracts": [
+    "task-management/contracts/v1/task-cache.schema.json",
+    "task-management/contracts/events/v1/task-deleted.schema.json"
+  ],
+  "backend": {
+    "route": "/api/tasks/:taskId",
+    "method": "DELETE",
+    "capabilities": ["TaskLoad", "TaskDelete", "DomainEventEmit"],
+    "mcp": { "exposed": true, "toolName": "delete_task" }
+  },
+  "frontend": {
+    "slots": ["TaskRowActions"],
+    "eventConsumers": [
+      {
+        "name": "invalidate-task-collection-after-delete",
+        "eventType": "TaskDeletedV1",
+        "contract": "task-management/contracts/events/v1/task-deleted.schema.json"
+      }
+    ]
+  },
+  "contracts": {
+    "input": "contracts/input.schema.json",
+    "output": "contracts/output.schema.json",
+    "mcpInput": "contracts/input.schema.json"
+  },
   "events": ["task-management/contracts/events/v1/task-deleted.schema.json"],
-  "security": { "mutation": true, "actorRequired": true, "idempotent": true, "requiresConfirmation": true, "concurrency": "optimistic", "mcpScopes": ["TaskDelete"] },
+  "security": {
+    "mutation": true,
+    "actorRequired": true,
+    "idempotent": true,
+    "requiresConfirmation": true,
+    "concurrency": "optimistic",
+    "mcpScopes": ["TaskDelete"]
+  },
   "workItems": [
-    { "id": "DEL-1", "description": "Implement existence-aware deletion and audit behavior.", "acceptanceCriterion": "Unknown IDs return NotFound and do not produce an audit record." },
-    { "id": "DEL-2", "description": "Register the confirmed MUI deletion action.", "acceptanceCriterion": "The HTTP request occurs only after dialog confirmation." }
+    {
+      "id": "DEL-1",
+      "description": "Implement existence-aware deletion and audit behavior.",
+      "acceptanceCriterion": "Unknown IDs return NotFound and do not produce an audit record."
+    },
+    {
+      "id": "DEL-2",
+      "description": "Register the confirmed MUI deletion action.",
+      "acceptanceCriterion": "The HTTP request occurs only after dialog confirmation."
+    }
   ]
 }

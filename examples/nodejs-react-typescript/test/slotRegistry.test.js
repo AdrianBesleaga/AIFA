@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { getSlotContributions, registerSlotContribution } from "../frontend/src/slots/slotRegistry.ts";
+import {
+  getSlotContributions,
+  registerSlotContribution,
+} from "../frontend/src/slots/slotRegistry.ts";
 
 test("sorts slot contributions by order", () => {
   registerSlotContribution({

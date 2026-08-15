@@ -5,7 +5,11 @@ registerSlotContribution({
   name: "refresh-button",
   order: 10,
   render: ({ model }) => (
-    <button className="icon-button" type="button" onClick={() => void model.refreshTasks("list-tasks")}>
+    <button
+      className="icon-button"
+      type="button"
+      onClick={() => void model.refreshTasks("list-tasks")}
+    >
       Refresh
     </button>
   ),
@@ -48,7 +52,9 @@ registerSlotContribution({
   name: "high-priority-count",
   order: 30,
   render: ({ model }) => {
-    const highPriorityCount = model.tasks.filter((task) => task.priority === "high" && !task.completed).length;
+    const highPriorityCount = model.tasks.filter(
+      (task) => task.priority === "high" && !task.completed,
+    ).length;
 
     return (
       <article className="summary-card warning">
@@ -69,7 +75,11 @@ registerSlotContribution({
         Reopen
       </button>
     ) : (
-      <button className="action-button primary" type="button" onClick={() => void model.completeTask()}>
+      <button
+        className="action-button primary"
+        type="button"
+        onClick={() => void model.completeTask()}
+      >
         Complete
       </button>
     ),
@@ -91,7 +101,11 @@ registerSlotContribution({
   name: "create-example-task",
   order: 10,
   render: ({ model }) => (
-    <button className="action-button primary" type="button" onClick={() => void model.createExampleTask()}>
+    <button
+      className="action-button primary"
+      type="button"
+      onClick={() => void model.createExampleTask()}
+    >
       Create example task
     </button>
   ),

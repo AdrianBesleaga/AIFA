@@ -1,0 +1,37 @@
+{
+  "$schema": "../../../../core/architecture/feature-definition.schema.json",
+  "name": "manage-ai-settings",
+  "boundedContext": "workspace-settings",
+  "businessNeed": "Let people choose their preferred AI connection independently from task-planning workflows and providers.",
+  "dependsOn": [],
+  "consumesContracts": [],
+  "backend": {
+    "route": "/api/settings/ai",
+    "method": "GET",
+    "capabilities": [],
+    "mcp": { "exposed": false }
+  },
+  "frontend": { "slots": ["AppNavigation", "AppContent", "SettingsPanel"] },
+  "contracts": { "input": "contracts/input.schema.json", "output": "contracts/output.schema.json" },
+  "events": [],
+  "security": {
+    "mutation": false,
+    "actorRequired": true,
+    "idempotent": true,
+    "requiresConfirmation": false,
+    "concurrency": "none",
+    "mcpScopes": ["SettingsRead"]
+  },
+  "workItems": [
+    {
+      "id": "SET-1",
+      "description": "Provide an independently discoverable AI settings surface.",
+      "acceptanceCriterion": "The settings UI is not imported by AI Planning or Task Management."
+    },
+    {
+      "id": "SET-2",
+      "description": "Reserve a governed settings feature boundary for persistence.",
+      "acceptanceCriterion": "Future settings storage can be added through declared capabilities without changing planning features."
+    }
+  ]
+}

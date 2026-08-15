@@ -4,14 +4,37 @@
   "title": "AIFA Feature Definition",
   "type": "object",
   "additionalProperties": false,
-  "required": ["name", "boundedContext", "businessNeed", "dependsOn", "consumesContracts", "backend", "frontend", "contracts", "events", "security", "workItems"],
+  "required": [
+    "name",
+    "boundedContext",
+    "businessNeed",
+    "dependsOn",
+    "consumesContracts",
+    "backend",
+    "frontend",
+    "contracts",
+    "events",
+    "security",
+    "workItems"
+  ],
   "properties": {
     "$schema": { "type": "string" },
     "name": { "type": "string", "pattern": "^[a-z]+(?:-[a-z]+)*$" },
     "boundedContext": { "type": "string", "pattern": "^[a-z]+(?:-[a-z]+)*$" },
     "businessNeed": { "type": "string", "minLength": 20 },
-    "dependsOn": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z]+(?:-[a-z]+)*$" } },
-    "consumesContracts": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z-]+/contracts/v[0-9]+/.+\\.schema\\.json$" } },
+    "dependsOn": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z]+(?:-[a-z]+)*$" }
+    },
+    "consumesContracts": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z-]+/contracts/(?:v[0-9]+|events/v[0-9]+)/.+\\.schema\\.json$"
+      }
+    },
     "backend": {
       "type": "object",
       "additionalProperties": false,
@@ -32,7 +55,26 @@
       "type": "object",
       "additionalProperties": false,
       "required": ["slots"],
-      "properties": { "slots": { "type": "array", "items": { "type": "string" } } }
+      "properties": {
+        "slots": { "type": "array", "items": { "type": "string" } },
+        "eventConsumers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "eventType", "contract"],
+            "properties": {
+              "name": { "type": "string", "pattern": "^[a-z]+(?:-[a-z]+)*$" },
+              "eventType": { "type": "string" },
+              "contract": {
+                "type": "string",
+                "pattern": "^[a-z-]+/contracts/events/v[0-9]+/.+\\.schema\\.json$"
+              }
+            }
+          }
+        }
+      }
     },
     "contracts": {
       "type": "object",
@@ -47,7 +89,14 @@
     "security": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["mutation", "actorRequired", "idempotent", "requiresConfirmation", "mcpScopes", "concurrency"],
+      "required": [
+        "mutation",
+        "actorRequired",
+        "idempotent",
+        "requiresConfirmation",
+        "mcpScopes",
+        "concurrency"
+      ],
       "properties": {
         "mutation": { "type": "boolean" },
         "actorRequired": { "type": "boolean" },
@@ -57,7 +106,14 @@
         "mcpScopes": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }
       }
     },
-    "events": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z-]+/contracts/events/v[0-9]+/.+\\.schema\\.json$" } },
+    "events": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z-]+/contracts/events/v[0-9]+/.+\\.schema\\.json$"
+      }
+    },
     "workItems": {
       "type": "array",
       "minItems": 1,
@@ -75,8 +131,38 @@
   },
   "allOf": [
     {
-      "if": { "type": "object", "properties": { "backend": { "type": "object", "properties": { "mcp": { "type": "object", "properties": { "exposed": { "const": true } }, "required": ["exposed"] } }, "required": ["mcp"] } }, "required": ["backend"] },
-      "then": { "type": "object", "properties": { "backend": { "type": "object", "properties": { "mcp": { "type": "object", "properties": { "toolName": { "type": "string" } }, "required": ["toolName"] } } } } }
+      "if": {
+        "type": "object",
+        "properties": {
+          "backend": {
+            "type": "object",
+            "properties": {
+              "mcp": {
+                "type": "object",
+                "properties": { "exposed": { "const": true } },
+                "required": ["exposed"]
+              }
+            },
+            "required": ["mcp"]
+          }
+        },
+        "required": ["backend"]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "backend": {
+            "type": "object",
+            "properties": {
+              "mcp": {
+                "type": "object",
+                "properties": { "toolName": { "type": "string" } },
+                "required": ["toolName"]
+              }
+            }
+          }
+        }
+      }
     }
   ]
 }

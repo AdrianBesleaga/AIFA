@@ -11,8 +11,10 @@ let activeFilter = "all";
 
 const traceCopy = {
   "list-tasks": "UI asks for task state. API runs listTasks. Runtime provides task.list.",
-  "create-task": "UI sends a title. API runs createTask. Runtime provides id, clock, storage, and audit.",
-  "complete-task": "UI toggles a task. API runs completeTask. Runtime loads, saves, timestamps, and audits.",
+  "create-task":
+    "UI sends a title. API runs createTask. Runtime provides id, clock, storage, and audit.",
+  "complete-task":
+    "UI toggles a task. API runs completeTask. Runtime loads, saves, timestamps, and audits.",
   "reopen-task": "UI toggles a done task. API runs reopenTask. Runtime loads, saves, and audits.",
   "delete-task": "UI deletes a task. API runs deleteTask. Runtime loads, deletes, and audits.",
 };
@@ -39,7 +41,9 @@ taskForm.addEventListener("submit", async (event) => {
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     activeFilter = button.dataset.filter;
-    filterButtons.forEach((candidate) => candidate.classList.toggle("active", candidate === button));
+    filterButtons.forEach((candidate) =>
+      candidate.classList.toggle("active", candidate === button),
+    );
     render();
   });
 });
@@ -127,4 +131,3 @@ function setStatus(message) {
 loadTasks().catch((error) => {
   setStatus(error.message);
 });
-

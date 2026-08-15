@@ -1,1 +1,12 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","additionalProperties":false,"required":["title","category","priority","idempotencyKey"],"properties":{"title":{"type":"string","minLength":1,"maxLength":240},"category":{"enum":["Work","Personal","Sport","Shopping","Other"]},"priority":{"enum":["Low","Medium","High"]},"idempotencyKey":{"type":"string","minLength":16,"maxLength":128}}}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CreateTaskInputV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title", "category", "priority"],
+  "properties": {
+    "title": { "type": "string", "minLength": 1, "maxLength": 240 },
+    "category": { "enum": ["Work", "Personal", "Sport", "Shopping", "Other"] },
+    "priority": { "enum": ["Low", "Medium", "High"] }
+  }
+}

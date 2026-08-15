@@ -42,4 +42,3 @@ export const completeTask = defineFeature({
     return context.ok({ task: completedTask });
   },
 });
-

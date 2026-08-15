@@ -32,7 +32,11 @@ function createRuntime(seed = []) {
 test("creates an active task with priority", async () => {
   const runtime = createRuntime();
 
-  const result = await runtime.run(createTask, { title: "  Build slot UI  ", priority: "high" }, actor);
+  const result = await runtime.run(
+    createTask,
+    { title: "  Build slot UI  ", priority: "high" },
+    actor,
+  );
 
   assert.equal(result.ok, true);
   assert.equal(result.value.task.id, "task-1");
@@ -45,7 +49,11 @@ test("creates an active task with priority", async () => {
 test("defaults unknown priority to medium", async () => {
   const runtime = createRuntime();
 
-  const result = await runtime.run(createTask, { title: "Review contract", priority: "urgent" }, actor);
+  const result = await runtime.run(
+    createTask,
+    { title: "Review contract", priority: "urgent" },
+    actor,
+  );
 
   assert.equal(result.value.task.priority, "medium");
 });

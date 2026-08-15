@@ -34,4 +34,3 @@ Allow an actor to reopen one completed task.
 - Reopens a completed task.
 - Returns success for an active task.
 - Returns `not_found` for a missing task.
-

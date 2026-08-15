@@ -6,14 +6,19 @@ export function listTasks(): Promise<ApiSuccess<{ tasks: Task[] }>> {
   return request("/api/tasks");
 }
 
-export function createTask(task: Pick<Task, "title" | "priority">): Promise<ApiSuccess<{ task: Task }>> {
+export function createTask(
+  task: Pick<Task, "title" | "priority">,
+): Promise<ApiSuccess<{ task: Task }>> {
   return request("/api/tasks", {
     method: "POST",
     body: JSON.stringify(task),
   });
 }
 
-export function setTaskCompleted(taskId: string, completed: boolean): Promise<ApiSuccess<{ task: Task }>> {
+export function setTaskCompleted(
+  taskId: string,
+  completed: boolean,
+): Promise<ApiSuccess<{ task: Task }>> {
   return request(`/api/tasks/${taskId}/${completed ? "complete" : "reopen"}`, {
     method: "POST",
   });

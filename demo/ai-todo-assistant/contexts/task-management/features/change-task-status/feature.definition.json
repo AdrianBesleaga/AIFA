@@ -4,15 +4,55 @@
   "boundedContext": "task-management",
   "businessNeed": "Keep task lists trustworthy by letting people and AI explicitly move work through Todo, InProgress, and Completed states.",
   "dependsOn": [],
-  "consumesContracts": [],
-  "backend": { "route": "/api/tasks/:taskId/status", "method": "PATCH", "capabilities": ["TaskLoad", "TaskSave", "ClockNow", "AuditRecord"], "mcp": { "exposed": true, "toolName": "change_task_status" } },
-  "frontend": { "slots": ["TaskRowActions"] },
-  "contracts": { "input": "contracts/input.schema.json", "output": "contracts/output.schema.json", "mcpInput": "contracts/input.schema.json" },
+  "consumesContracts": [
+    "task-management/contracts/v1/task-cache.schema.json",
+    "task-management/contracts/events/v1/task-status-changed.schema.json"
+  ],
+  "backend": {
+    "route": "/api/tasks/:taskId/status",
+    "method": "PATCH",
+    "capabilities": ["TaskLoad", "TaskSave", "ClockNow", "DomainEventEmit"],
+    "mcp": { "exposed": true, "toolName": "change_task_status" }
+  },
+  "frontend": {
+    "slots": ["TaskRowActions"],
+    "eventConsumers": [
+      {
+        "name": "invalidate-task-collection-after-status-change",
+        "eventType": "TaskStatusChangedV1",
+        "contract": "task-management/contracts/events/v1/task-status-changed.schema.json"
+      }
+    ]
+  },
+  "contracts": {
+    "input": "contracts/input.schema.json",
+    "output": "contracts/output.schema.json",
+    "mcpInput": "contracts/input.schema.json"
+  },
   "events": ["task-management/contracts/events/v1/task-status-changed.schema.json"],
-  "security": { "mutation": true, "actorRequired": true, "idempotent": true, "requiresConfirmation": false, "concurrency": "optimistic", "mcpScopes": ["TaskWrite"] },
+  "security": {
+    "mutation": true,
+    "actorRequired": true,
+    "idempotent": true,
+    "requiresConfirmation": false,
+    "concurrency": "optimistic",
+    "mcpScopes": ["TaskWrite"]
+  },
   "workItems": [
-    { "id": "STS-1", "description": "Model allowed TaskStatus transitions as a task-management domain invariant.", "acceptanceCriterion": "Invalid transitions return InvalidStatusTransition." },
-    { "id": "STS-2", "description": "Implement the status-transition feature and audit event mapping.", "acceptanceCriterion": "Completion timestamps are set and cleared correctly." },
-    { "id": "STS-3", "description": "Register MUI and MCP status controls.", "acceptanceCriterion": "HTTP and MCP calls produce the same validated result." }
+    {
+      "id": "STS-1",
+      "description": "Model allowed TaskStatus transitions as a task-management domain invariant.",
+      "acceptanceCriterion": "Invalid transitions return InvalidStatusTransition."
+    },
+    {
+      "id": "STS-2",
+      "description": "Implement the status-transition feature and audit event mapping.",
+      "acceptanceCriterion": "Completion timestamps are set and cleared correctly."
+    },
+    {
+      "id": "STS-3",
+      "description": "Register MUI and MCP status controls.",
+      "acceptanceCriterion": "HTTP and MCP calls produce the same validated result."
+    }
   ]
 }

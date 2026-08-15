@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
+  <title id="title">AIFA frontend UI slot composition</title>
+  <desc id="description">Feature-owned UI contributions are discovered, typed, and composed into named slots published by an application shell.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#090b13"/><stop offset="1" stop-color="#0d1a24"/></linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#68718e"/></marker>
+    <style>
+      .heading { fill:#f7f8ff; font-family:Inter,Arial,sans-serif; font-size:50px; font-weight:800; letter-spacing:-1.8px }
+      .eyebrow { fill:#63d9ff; font-family:Inter,Arial,sans-serif; font-size:17px; font-weight:800; letter-spacing:3px }
+      .title { fill:#f7f8ff; font-family:Inter,Arial,sans-serif; font-size:19px; font-weight:750 }
+      .copy { fill:#a8afc7; font-family:Inter,Arial,sans-serif; font-size:14px; font-weight:400 }
+      .tiny { fill:#727b9a; font-family:Inter,Arial,sans-serif; font-size:11px; font-weight:750; letter-spacing:1.5px }
+      .panel { fill:#fff; fill-opacity:.045; stroke:#fff; stroke-opacity:.13 }
+      .slot { fill:#63d9ff; fill-opacity:.055; stroke:#63d9ff; stroke-opacity:.50; stroke-width:2; stroke-dasharray:8 7 }
+      .line { stroke:#68718e; stroke-width:2.5; marker-end:url(#arrow) }
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="url(#background)"/>
+  <circle cx="1420" cy="160" r="330" fill="#63d9ff" opacity=".065"/>
+  <text x="95" y="86" class="eyebrow">FRONTEND EXTENSION WITH UI SLOTS</text>
+  <text x="95" y="148" class="heading">The shell owns the where. Features own the what.</text>
+  <text x="95" y="188" class="copy" font-size="18">Named, typed extension points keep layout stable while feature UI evolves independently.</text>
+
+  <text x="90" y="265" class="tiny">FEATURE-OWNED CONTRIBUTIONS</text>
+  <rect x="86" y="292" width="330" height="116" rx="22" fill="#745cff" fill-opacity=".09" stroke="#9c8cff" stroke-opacity=".28"/>
+  <circle cx="125" cy="331" r="10" fill="#9c8cff"/>
+  <text x="150" y="338" class="title">Generate Task Plan</text>
+  <text x="125" y="370" class="copy">contributes → AssistantPanel</text>
+  <text x="125" y="392" class="copy">model → PlannerSlotModel</text>
+
+  <rect x="86" y="428" width="330" height="116" rx="22" fill="#745cff" fill-opacity=".09" stroke="#9c8cff" stroke-opacity=".28"/>
+  <circle cx="125" cy="467" r="10" fill="#9c8cff"/>
+  <text x="150" y="474" class="title">Create Task</text>
+  <text x="125" y="506" class="copy">contributes → TaskComposer</text>
+  <text x="125" y="528" class="copy">model → ComposerSlotModel</text>
+
+  <rect x="86" y="564" width="330" height="116" rx="22" fill="#745cff" fill-opacity=".09" stroke="#9c8cff" stroke-opacity=".28"/>
+  <circle cx="125" cy="603" r="10" fill="#9c8cff"/>
+  <text x="150" y="610" class="title">Task Row Actions</text>
+  <text x="125" y="642" class="copy">contributes → TaskRowActions</text>
+  <text x="125" y="664" class="copy">model → RowActionsSlotModel</text>
+
+  <line x1="430" y1="486" x2="522" y2="486" class="line"/>
+
+  <rect x="538" y="310" width="270" height="350" rx="28" class="panel"/>
+  <text x="568" y="353" class="tiny">GENERIC COMPOSITION</text>
+  <circle cx="584" cy="414" r="20" fill="#63d9ff" fill-opacity=".13"/>
+  <text x="584" y="421" text-anchor="middle" class="title" font-size="15">1</text>
+  <text x="620" y="411" class="title">Discover</text><text x="620" y="435" class="copy">feature-local exports</text>
+  <line x1="584" y1="442" x2="584" y2="481" stroke="#4d5872" stroke-width="2"/>
+  <circle cx="584" cy="511" r="20" fill="#63d9ff" fill-opacity=".13"/>
+  <text x="584" y="518" text-anchor="middle" class="title" font-size="15">2</text>
+  <text x="620" y="508" class="title">Type-check</text><text x="620" y="532" class="copy">slot ↔ model contract</text>
+  <line x1="584" y1="539" x2="584" y2="578" stroke="#4d5872" stroke-width="2"/>
+  <circle cx="584" cy="608" r="20" fill="#63d9ff" fill-opacity=".13"/>
+  <text x="584" y="615" text-anchor="middle" class="title" font-size="15">3</text>
+  <text x="620" y="605" class="title">Order + render</text><text x="620" y="629" class="copy">deterministic registry</text>
+
+  <line x1="822" y1="486" x2="914" y2="486" class="line"/>
+
+  <rect x="930" y="242" width="578" height="514" rx="30" fill="#121522" stroke="#fff" stroke-opacity=".17"/>
+  <circle cx="964" cy="270" r="6" fill="#ff809f"/><circle cx="984" cy="270" r="6" fill="#ffc66d"/><circle cx="1004" cy="270" r="6" fill="#5ce0b6"/>
+  <rect x="930" y="292" width="112" height="464" fill="#fff" fill-opacity=".025"/>
+  <line x1="1042" y1="292" x2="1042" y2="756" stroke="#fff" stroke-opacity=".10"/>
+  <text x="986" y="332" text-anchor="middle" class="tiny">APP SHELL</text>
+  <text x="986" y="369" text-anchor="middle" class="copy">layout</text>
+  <text x="986" y="391" text-anchor="middle" class="copy">navigation</text>
+  <text x="986" y="413" text-anchor="middle" class="copy">auth</text>
+
+  <rect x="1074" y="322" width="400" height="64" rx="16" class="slot"/>
+  <text x="1097" y="348" class="tiny" fill="#63d9ff">APPHEADER SLOT</text>
+  <rect x="1351" y="338" width="102" height="31" rx="9" fill="#745cff" fill-opacity=".30"/>
+  <text x="1402" y="358" text-anchor="middle" class="copy" fill="#f7f8ff">identity UI</text>
+
+  <rect x="1074" y="409" width="400" height="106" rx="16" class="slot"/>
+  <text x="1097" y="437" class="tiny" fill="#63d9ff">ASSISTANTPANEL SLOT</text>
+  <rect x="1265" y="455" width="188" height="40" rx="10" fill="#745cff" fill-opacity=".30"/>
+  <text x="1359" y="480" text-anchor="middle" class="copy" fill="#f7f8ff">task-plan-review</text>
+
+  <rect x="1074" y="537" width="400" height="174" rx="16" class="slot"/>
+  <text x="1097" y="565" class="tiny" fill="#63d9ff">APPCONTENT SLOT</text>
+  <rect x="1097" y="589" width="162" height="96" rx="12" fill="#fff" fill-opacity=".055" stroke="#fff" stroke-opacity=".12"/>
+  <text x="1178" y="625" text-anchor="middle" class="copy">task board</text>
+  <rect x="1275" y="589" width="178" height="96" rx="12" fill="#fff" fill-opacity=".055" stroke="#fff" stroke-opacity=".12"/>
+  <text x="1364" y="620" text-anchor="middle" class="copy">task row</text>
+  <rect x="1300" y="641" width="128" height="28" rx="8" fill="#5ce0b6" fill-opacity=".16" stroke="#5ce0b6" stroke-opacity=".26"/>
+  <text x="1364" y="660" text-anchor="middle" class="copy" fill="#5ce0b6">RowActions slot</text>
+
+  <rect x="86" y="760" width="1422" height="74" rx="21" fill="#63d9ff" fill-opacity=".055" stroke="#63d9ff" stroke-opacity=".19"/>
+  <text x="118" y="790" class="title">Why UI slots make extension easy</text>
+  <text x="118" y="814" class="copy" font-size="16">No feature imports in the shell · small typed models · deterministic composition · independent UI testing · add or remove contributions without layout rewrites</text>
+</svg>

@@ -35,4 +35,3 @@ export function fail(code, message, details = {}) {
     },
   };
 }
-

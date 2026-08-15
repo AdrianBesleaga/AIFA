@@ -4,15 +4,52 @@
   "boundedContext": "ai-planning",
   "businessNeed": "Save users from manually decomposing goals by generating reviewable, categorized task suggestions from natural language.",
   "dependsOn": [],
-  "consumesContracts": ["task-management/contracts/v1/task-taxonomy.schema.json"],
-  "backend": { "route": "/api/assistant/task-plan", "method": "POST", "capabilities": ["AssistantGenerateTaskPlan", "AuditRecord"], "mcp": { "exposed": true, "toolName": "generate_task_plan" } },
+  "consumesContracts": [
+    "task-management/contracts/v1/task-taxonomy.schema.json",
+    "task-management/contracts/v1/task-cache.schema.json"
+  ],
+  "backend": {
+    "route": "/api/assistant/task-plan",
+    "method": "POST",
+    "capabilities": [
+      "AssistantGenerateTaskPlan",
+      "TaskPlanCreate",
+      "IdCreate",
+      "ClockNow",
+      "DomainEventEmit"
+    ],
+    "mcp": { "exposed": true, "toolName": "generate_task_plan" }
+  },
   "frontend": { "slots": ["AssistantPanel"] },
-  "contracts": { "input": "contracts/input.schema.json", "output": "contracts/output.schema.json", "mcpInput": "contracts/input.schema.json" },
+  "contracts": {
+    "input": "contracts/input.schema.json",
+    "output": "contracts/output.schema.json",
+    "mcpInput": "contracts/input.schema.json"
+  },
   "events": ["ai-planning/contracts/events/v1/task-plan-generated.schema.json"],
-  "security": { "mutation": true, "actorRequired": true, "idempotent": true, "requiresConfirmation": false, "concurrency": "none", "mcpScopes": ["AssistantPlanGenerate"] },
+  "security": {
+    "mutation": true,
+    "actorRequired": true,
+    "idempotent": true,
+    "requiresConfirmation": false,
+    "concurrency": "none",
+    "mcpScopes": ["AssistantPlanGenerate"]
+  },
   "workItems": [
-    { "id": "AIP-1", "description": "Define a provider-neutral AI planning capability and Ollama adapter.", "acceptanceCriterion": "The feature has no direct dependency on an AI SDK." },
-    { "id": "AIP-2", "description": "Validate AI suggestions into TaskCategory and TaskPriority enums.", "acceptanceCriterion": "Invalid provider output returns AssistantResponseInvalid." },
-    { "id": "AIP-3", "description": "Register the MUI suggestion-review panel.", "acceptanceCriterion": "Accepted suggestions use the create-task API boundary." }
+    {
+      "id": "AIP-1",
+      "description": "Define a provider-neutral AI planning capability and Ollama adapter.",
+      "acceptanceCriterion": "The feature has no direct dependency on an AI SDK."
+    },
+    {
+      "id": "AIP-2",
+      "description": "Validate AI suggestions into TaskCategory and TaskPriority enums.",
+      "acceptanceCriterion": "Invalid provider output returns AssistantResponseInvalid."
+    },
+    {
+      "id": "AIP-3",
+      "description": "Register the MUI suggestion-review panel.",
+      "acceptanceCriterion": "Accepted suggestions use the create-task API boundary."
+    }
   ]
 }

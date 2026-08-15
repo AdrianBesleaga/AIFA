@@ -1,6 +1,10 @@
 import { fail, ok } from "./feature.js";
 
-export function createAifaRuntime({ taskStore, idFactory = createIdFactory(), clock = () => new Date() }) {
+export function createAifaRuntime({
+  taskStore,
+  idFactory = createIdFactory(),
+  clock = () => new Date(),
+}) {
   const auditLog = [];
 
   const allCapabilities = {
@@ -32,13 +36,17 @@ export function createAifaRuntime({ taskStore, idFactory = createIdFactory(), cl
 
           if (!allowed.has(capabilityName)) {
             return async () =>
-              fail("capability_not_allowed", `Feature '${feature.name}' cannot use '${capabilityName}'`);
+              fail(
+                "capability_not_allowed",
+                `Feature '${feature.name}' cannot use '${capabilityName}'`,
+              );
           }
 
           const capability = allCapabilities[capabilityName];
 
           if (!capability) {
-            return async () => fail("capability_missing", `Runtime does not provide '${capabilityName}'`);
+            return async () =>
+              fail("capability_missing", `Runtime does not provide '${capabilityName}'`);
           }
 
           return capability;
@@ -75,4 +83,3 @@ function createIdFactory() {
     },
   };
 }
-

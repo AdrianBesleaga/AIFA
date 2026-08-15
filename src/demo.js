@@ -21,4 +21,3 @@ const actor = {
 const result = await runtime.run(archiveProject, { projectId: "project-1" }, actor);
 
 console.log(JSON.stringify(result, null, 2));
-

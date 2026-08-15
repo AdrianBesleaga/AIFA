@@ -34,4 +34,3 @@ Allow an actor to create one active task.
 - Creates an active task.
 - Trims the provided title.
 - Rejects an empty title.
-

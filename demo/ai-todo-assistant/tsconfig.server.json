@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "dist/server",
+    "rootDir": ".",
+    "sourceMap": true
+  },
+  "include": ["core/**/*.ts", "core/**/*.tsx", "contexts/**/*.ts", "contexts/**/*.tsx"],
+  "exclude": ["core/frontend/main.tsx", "vite.config.ts"]
+}

@@ -11,7 +11,12 @@ export function Slot<Name extends SlotName>({ name, model }: SlotProperties<Name
   const contributions = getSlotContributions(name);
 
   return contributions.map((contribution) => (
-    <span className="slot-contribution" data-slot={name} data-contribution={contribution.name} key={contribution.name}>
+    <span
+      className="slot-contribution"
+      data-slot={name}
+      data-contribution={contribution.name}
+      key={contribution.name}
+    >
       {contribution.render({ model, contribution })}
     </span>
   ));

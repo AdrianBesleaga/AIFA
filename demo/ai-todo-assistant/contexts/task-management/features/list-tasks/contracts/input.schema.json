@@ -1,1 +1,12 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","additionalProperties":false,"properties":{"category":{"enum":["Work","Personal","Sport","Shopping","Other"]},"status":{"enum":["Todo","InProgress","Completed"]}}}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ListTasksInputV1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "category": { "enum": ["Work", "Personal", "Sport", "Shopping", "Other"] },
+    "status": { "enum": ["Todo", "InProgress", "Completed"] },
+    "cursor": { "type": "string", "minLength": 1, "maxLength": 1024 },
+    "limit": { "type": "integer", "minimum": 1, "maximum": 100 }
+  }
+}

@@ -1,1 +1,10 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","additionalProperties":false,"required":["task"],"properties":{"task":{"$ref":"https://aifa.dev/task-management/contracts/v1/task-view.schema.json"}}}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CreateTaskOutputV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task"],
+  "properties": {
+    "task": { "$ref": "https://aifa.dev/task-management/contracts/v1/task-view.schema.json" }
+  }
+}

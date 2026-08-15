@@ -25,7 +25,9 @@ function App() {
   }
 
   useEffect(() => {
-    void refreshTasks().catch((error: unknown) => setStatus(error instanceof Error ? error.message : "Request failed"));
+    void refreshTasks().catch((error: unknown) =>
+      setStatus(error instanceof Error ? error.message : "Request failed"),
+    );
   }, []);
 
   const visibleTasks = useMemo(() => {
@@ -131,7 +133,12 @@ function App() {
 
         <ul className="task-list" aria-label="Tasks">
           {visibleTasks.map((task) => (
-            <TaskRow key={task.id} task={task} onComplete={handleTaskCompletion} onDelete={handleDeleteTask} />
+            <TaskRow
+              key={task.id}
+              task={task}
+              onComplete={handleTaskCompletion}
+              onDelete={handleDeleteTask}
+            />
           ))}
         </ul>
 
@@ -149,7 +156,10 @@ function App() {
         <div className="trace-card">
           <span>Active feature</span>
           <strong>{activeFeature}</strong>
-          <p>React triggers HTTP. The Node adapter runs one AIFA feature. Runtime provides capabilities.</p>
+          <p>
+            React triggers HTTP. The Node adapter runs one AIFA feature. Runtime provides
+            capabilities.
+          </p>
         </div>
         <div className="slot-card">
           <span>Frontend slot model</span>

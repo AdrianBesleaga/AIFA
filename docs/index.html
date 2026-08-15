@@ -56,7 +56,8 @@
           <p class="eyebrow">Architecture for agentic coding</p>
           <h1 id="hero-title">AI Atomic Feature Architecture</h1>
           <p class="hero-copy">
-            Build software as small, isolated, AI-implementable features. Each feature ships with a contract: input, output, capabilities, rules, and behavioral tests.
+            Build software as small, isolated, AI-implementable features. Each feature ships with a
+            contract: input, output, capabilities, rules, and behavioral tests.
           </p>
           <div class="hero-points" aria-label="AIFA highlights">
             <span>Atomic tasks</span>
@@ -64,7 +65,9 @@
             <span>Runtime capabilities</span>
           </div>
           <div class="hero-actions" aria-label="Primary actions">
-            <a class="button primary" href="https://github.com/AdrianBesleaga/AIFA">View on GitHub</a>
+            <a class="button primary" href="https://github.com/AdrianBesleaga/AIFA"
+              >View on GitHub</a
+            >
             <a class="button secondary" href="#contract">See the contract</a>
           </div>
         </div>
@@ -77,7 +80,8 @@
             <h2>Can an AI agent implement one feature without understanding the whole project?</h2>
           </div>
           <p>
-            AIFA moves hidden project knowledge into explicit architectural contracts. The task stays small because the context is packaged, bounded, and testable.
+            AIFA moves hidden project knowledge into explicit architectural contracts. The task
+            stays small because the context is packaged, bounded, and testable.
           </p>
         </div>
       </section>
@@ -92,22 +96,33 @@
           <article>
             <span>01</span>
             <h3>Ticket Contract</h3>
-            <p>The work item defines the goal, inputs, outputs, rules, failure cases, and acceptance tests.</p>
+            <p>
+              The work item defines the goal, inputs, outputs, rules, failure cases, and acceptance
+              tests.
+            </p>
           </article>
           <article>
             <span>02</span>
             <h3>Atomic Feature</h3>
-            <p>The implementation receives one context object and uses only declared capabilities.</p>
+            <p>
+              The implementation receives one context object and uses only declared capabilities.
+            </p>
           </article>
           <article>
             <span>03</span>
             <h3>Capability Runtime</h3>
-            <p>The runtime owns infrastructure like persistence, permissions, queues, logging, and transactions.</p>
+            <p>
+              The runtime owns infrastructure like persistence, permissions, queues, logging, and
+              transactions.
+            </p>
           </article>
           <article>
             <span>04</span>
             <h3>Behavioral Tests</h3>
-            <p>Tests verify what the feature does, so the implementation can evolve without breaking the contract.</p>
+            <p>
+              Tests verify what the feature does, so the implementation can evolve without breaking
+              the contract.
+            </p>
           </article>
         </div>
       </section>
@@ -118,7 +133,8 @@
             <p class="section-kicker">The shift</p>
             <h2 id="compare-title">From codebase archaeology to feature contracts.</h2>
             <p>
-              Most systems make agents explore first and implement second. AIFA makes the architecture say what the feature may know and do before implementation begins.
+              Most systems make agents explore first and implement second. AIFA makes the
+              architecture say what the feature may know and do before implementation begins.
             </p>
           </div>
           <div class="comparison" aria-label="Architecture comparison">
@@ -143,7 +159,8 @@
         <div class="contract-layout">
           <div class="contract-copy">
             <p>
-              A good AIFA ticket removes guesswork. It tells the agent what to build, which capabilities are available, which behavior matters, and when the work is done.
+              A good AIFA ticket removes guesswork. It tells the agent what to build, which
+              capabilities are available, which behavior matters, and when the work is done.
             </p>
             <ul class="check-list">
               <li>One responsibility</li>
@@ -184,7 +201,8 @@ Acceptance tests:
             <p class="section-kicker">Proof of concept</p>
             <h2>A tiny runtime that proves the shape.</h2>
             <p>
-              The first repo includes a memory runtime, one atomic feature, one ticket contract, and behavioral tests. It is intentionally small so the architecture stays visible.
+              The first repo includes a memory runtime, one atomic feature, one ticket contract, and
+              behavioral tests. It is intentionally small so the architecture stays visible.
             </p>
           </div>
           <div class="terminal" aria-label="Run commands">
@@ -216,11 +234,16 @@ $ npm run demo
         <div class="principles">
           <article>
             <h3>Atomic</h3>
-            <p>Each feature is the smallest meaningful behavior that can be implemented and tested independently.</p>
+            <p>
+              Each feature is the smallest meaningful behavior that can be implemented and tested
+              independently.
+            </p>
           </article>
           <article>
             <h3>Explicit</h3>
-            <p>Input, output, capabilities, and failure cases are declared before code is written.</p>
+            <p>
+              Input, output, capabilities, and failure cases are declared before code is written.
+            </p>
           </article>
           <article>
             <h3>Bounded</h3>
@@ -238,7 +261,8 @@ $ npm run demo
           <p class="section-kicker">Shareable description</p>
           <h2>Software architecture for AI-native implementation.</h2>
           <p>
-            AI Atomic Feature Architecture is a way to design applications so each feature can be implemented from a small contract instead of full project context.
+            AI Atomic Feature Architecture is a way to design applications so each feature can be
+            implemented from a small contract instead of full project context.
           </p>
           <a class="button primary" href="https://github.com/AdrianBesleaga/AIFA">Star the repo</a>
         </div>

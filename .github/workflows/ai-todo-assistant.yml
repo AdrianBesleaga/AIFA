@@ -1,0 +1,27 @@
+name: AI Todo Assistant
+
+on:
+  pull_request:
+    paths: ["demo/ai-todo-assistant/**"]
+  push:
+    paths: ["demo/ai-todo-assistant/**"]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo/ai-todo-assistant
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: demo/ai-todo-assistant/package-lock.json
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run test:integration
+      - run: npm run build
+      - run: npm run test:smoke

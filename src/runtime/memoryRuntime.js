@@ -13,7 +13,9 @@ export function createMemoryRuntime(seed = {}) {
       return project;
     },
     "permission.check": async ({ actor, permission, resource }) => {
-      return actor.permissions?.includes(permission) && resource.organizationId === actor.organizationId;
+      return (
+        actor.permissions?.includes(permission) && resource.organizationId === actor.organizationId
+      );
     },
     "audit.record": async (entry) => {
       state.auditLog.push({
@@ -36,12 +38,16 @@ export function createMemoryRuntime(seed = {}) {
 
           if (!allowed.has(capabilityName)) {
             return async () =>
-              fail("capability_not_allowed", `Feature '${feature.name}' cannot use '${capabilityName}'`);
+              fail(
+                "capability_not_allowed",
+                `Feature '${feature.name}' cannot use '${capabilityName}'`,
+              );
           }
 
           const capability = allCapabilities[capabilityName];
           if (!capability) {
-            return async () => fail("capability_missing", `Runtime does not provide '${capabilityName}'`);
+            return async () =>
+              fail("capability_missing", `Runtime does not provide '${capabilityName}'`);
           }
 
           return capability;
@@ -68,4 +74,3 @@ export function createMemoryRuntime(seed = {}) {
     state,
   };
 }
-

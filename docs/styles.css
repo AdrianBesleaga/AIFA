@@ -26,7 +26,12 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
     sans-serif;
   line-height: 1.6;
   overflow-x: hidden;
@@ -116,7 +121,13 @@ nav a:hover {
 
 .hero::before {
   background:
-    linear-gradient(90deg, rgba(16, 26, 22, 0.98) 0%, rgba(16, 26, 22, 0.9) 42%, rgba(16, 26, 22, 0.16) 67%, transparent 100%),
+    linear-gradient(
+      90deg,
+      rgba(16, 26, 22, 0.98) 0%,
+      rgba(16, 26, 22, 0.9) 42%,
+      rgba(16, 26, 22, 0.16) 67%,
+      transparent 100%
+    ),
     linear-gradient(180deg, transparent 0%, rgba(16, 26, 22, 0.18) 100%);
   content: "";
   inset: 0;
@@ -182,8 +193,7 @@ nav a:hover {
 .system-feature {
   animation-delay: -1.4s;
   background:
-    linear-gradient(135deg, rgba(102, 255, 210, 0.18), transparent),
-    rgba(8, 18, 15, 0.88);
+    linear-gradient(135deg, rgba(102, 255, 210, 0.18), transparent), rgba(8, 18, 15, 0.88);
   border-color: rgba(102, 255, 210, 0.78);
   color: #ffffff;
   height: 116px;
@@ -418,8 +428,7 @@ h3 {
 
 code,
 pre {
-  font-family:
-    "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 .comparison code {

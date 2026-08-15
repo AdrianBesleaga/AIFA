@@ -42,4 +42,3 @@ export const reopenTask = defineFeature({
     return context.ok({ task: reopenedTask });
   },
 });
-

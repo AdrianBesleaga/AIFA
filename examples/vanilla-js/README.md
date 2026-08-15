@@ -29,13 +29,13 @@ http://localhost:3000
 
 Each app action maps to one AIFA feature:
 
-| UI Action | API Route | Atomic Feature |
-| --- | --- | --- |
-| Create task | `POST /api/tasks` | `createTask` |
-| List tasks | `GET /api/tasks` | `listTasks` |
+| UI Action     | API Route                      | Atomic Feature |
+| ------------- | ------------------------------ | -------------- |
+| Create task   | `POST /api/tasks`              | `createTask`   |
+| List tasks    | `GET /api/tasks`               | `listTasks`    |
 | Complete task | `POST /api/tasks/:id/complete` | `completeTask` |
-| Reopen task | `POST /api/tasks/:id/reopen` | `reopenTask` |
-| Delete task | `DELETE /api/tasks/:id` | `deleteTask` |
+| Reopen task   | `POST /api/tasks/:id/reopen`   | `reopenTask`   |
+| Delete task   | `DELETE /api/tasks/:id`        | `deleteTask`   |
 
 The feature does not know HTTP, files, local storage, routing, or the frontend.
 
@@ -76,4 +76,3 @@ With AIFA, the implementation target is small:
 4. run behavioral tests
 
 The runtime owns infrastructure. The feature owns behavior.
-

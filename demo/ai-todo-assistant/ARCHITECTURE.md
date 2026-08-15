@@ -93,6 +93,12 @@ Every request—HTTP, MCP, browser, or provider callback—must resolve to an `A
 
 Browser authentication uses an OpenID Connect authorization-code flow with PKCE. The remote MCP endpoint uses Streamable HTTP and acts as an OAuth 2.1 protected resource: it validates bearer-token audience, expiry, tenant, user, and scopes on every request. A local stdio MCP connection obtains its credentials from the local environment and is restricted to the configured tenant. Token revocation, client registration, and scope assignment are owned by the identity adapter in core.
 
+### Authorization Middleware
+
+Authorization is a core HTTP middleware concern, never feature logic. `createAuthorizationMiddleware` runs after route discovery and before idempotency or feature execution. It resolves the actor once, returns `401 NotAuthorized` when no trusted actor is available, and returns `403 Forbidden` when the actor lacks any scope required by the executable feature manifest. Both HTTP request handlers use this middleware so local API routes and dynamically discovered routes cannot drift.
+
+`feature.definition.json` declares each feature's `mcpScopes`; the colocated `manifest.ts` binds those enum-backed scopes to the executable route. This keeps the permission requirement visible in the machine-readable plan while allowing the runtime to enforce it without importing a feature's business code. Development-only `x-aifa-*` actor headers are disabled in production; production actors must come from a verified OIDC bearer token. The local stdio MCP bridge forwards its configured development actor or production bearer token through the same middleware.
+
 Tasks, task plans, audits, idempotency records, and outbox events are tenant-owned. MongoDB capability adapters receive the actor and apply `tenantId` to every query and mutation; the feature never supplies or overrides a tenant ID. Required indexes include `{ tenantId, status, category }`, `{ tenantId, createdAt }`, and unique `{ tenantId, actorId, featureName, idempotencyKey }` for commands.
 
 MongoDB must run as a replica set (or sharded cluster) in every environment that enables multi-document mutations, including integration tests. This is required for the task mutation, audit, idempotency record, and outbox event to commit atomically.
@@ -101,7 +107,7 @@ MCP authentication maps each client connection to an actor and only exposes tool
 
 ## Command Safety and Concurrency
 
-Every mutation has a caller-supplied idempotency key and expected task version where relevant. Runtime capabilities persist the command result with the idempotency record, so an HTTP or MCP retry returns the original result without repeating persistence or audit work.
+Every mutation has a caller-supplied idempotency key and expected task version where relevant. The idempotency store atomically claims a key before feature execution, records a fenced execution identifier, and persists the command result on completion. A bounded lease lets a retry recover from a crashed worker without allowing an earlier execution to overwrite the recovered result. HTTP or MCP retries return the original completed result without repeating persistence or audit work.
 
 Features use typed failures for `VersionConflict`, `IdempotencyKeyReuse`, `NotAuthorized`, and `ConfirmationRequired`. These failures are part of each adapter contract, not raw infrastructure errors.
 
@@ -155,12 +161,98 @@ Frontend discovery uses Vite `import.meta.glob` to load feature manifests and re
 
 MCP discovery loads only manifest-declared tools. Each tool calls the same AIFA feature as the HTTP route, so MCP clients cannot bypass validation, authorization, capability checks, or audit records.
 
+## Frontend State, Hooks, and Event Synchronization
+
+Frontend composition follows the same dependency direction as the backend. Slots compose visual
+contributions, feature-local hooks adapt one feature contract to React, and a runtime-owned query
+cache synchronizes server-owned state. A feature must not import another feature, call another
+feature's hook, hold a reference to another feature's component, or emit an imperative UI event
+such as `RefreshTaskCount`.
+
+Frontend feature code may import generic frontend infrastructure from `core/`, its own feature,
+its bounded context's domain, and versioned contracts published by a bounded context. A versioned
+frontend contract may define read models, query inputs, and stable cache tags, but it must not
+contain React components, hooks, API calls, or feature orchestration.
+
+### Responsibilities
+
+- **Components** render a slot contribution and own only transient presentation state such as an
+  open menu, draft field value, or selected tab.
+- **Feature-local query hooks** read one published read model and expose loading, success, empty,
+  and typed failure states to that feature's components.
+- **Feature-local command hooks** invoke one feature boundary and own command state keyed by
+  operation and, where relevant, entity ID.
+- **Core frontend infrastructure** owns generic query caching, request deduplication, cancellation,
+  retries, authentication-aware transport, event transport, and provider lifecycle. Core must not
+  know task, plan, settings, or other product-specific cache keys or event reactions.
+- **Versioned bounded-context frontend contracts** define stable read models, query inputs, and
+  enum-backed cache tags shared by independent feature consumers. They contain no behavior.
+- **Frontend domain-event consumers** validate a published event contract and translate that fact
+  into semantic cache invalidation. They never target a component or call a feature directly. Each
+  consumer belongs to a feature slice, declares the consumed event schema in `consumesContracts`,
+  and registers through that feature's discovered frontend manifest; core keeps no hand-written
+  product-event registry.
+
+The application installs the generic query and event providers above the app shell so slot
+contributions in the header, navigation, content, footer, or future surfaces observe the same
+tenant-scoped cache. Cache entries and event subscriptions are scoped by the authenticated actor
+and tenant and are cleared when that identity changes or signs out.
+
+### Semantic Invalidation
+
+Commands and events coordinate through semantic resource tags rather than component names. For
+example, Task Management may publish a versioned `TaskCollection` cache tag. List, board, summary,
+and count queries that depend on the task collection associate their cache entries with that tag.
+Create, status-change, and delete command hooks invalidate the tag only after an explicit successful
+result. The query runtime then marks every dependent entry stale, deduplicates refetches, and
+rerenders subscribed contributions.
+
+Consequently, a Create Task contribution does not know that a task-count contribution exists. Both
+depend only on the published Task Management frontend contract and generic core query runtime:
+
+```txt
+Create Task component
+  -> feature-local create command hook
+  -> successful Create Task result
+  -> invalidate TaskCollection
+  -> generic query cache
+  -> subscribed task list, board, summary, and count queries update
+```
+
+Mutation responses are the immediate synchronization mechanism for commands issued in the current
+browser. The successful command hook invalidates affected tags without waiting for the durable
+outbox event to return to that browser.
+
+Tasks may also be created by MCP clients, another browser, another actor, or background processing.
+For those cases, a generic core SSE or WebSocket adapter delivers validated versioned domain events
+to dynamically registered frontend event consumers. A Task Management consumer maps
+`TaskCreatedV1`, `TaskStatusChangedV1`, and `TaskDeletedV1` to the same `TaskCollection`
+invalidation. Receiving both the local-success invalidation and its later domain event is expected;
+invalidation must be idempotent and refetches deduplicated.
+
+Published events are facts, not client state containers. When an event contains only an aggregate
+identifier, consumers invalidate and refetch the authoritative read model rather than constructing
+a partial cache entry. Direct cache updates are allowed only when the event or command result
+contains the complete versioned read model required by every affected query and preserves tenant,
+filter, ordering, authorization, and optimistic-concurrency semantics.
+
+### Frontend Boundary Tests
+
+Focused frontend tests must verify that:
+
+1. a command hook invalidates its declared semantic tags only after success;
+2. a failed command leaves dependent cached data intact and exposes its typed failure;
+3. each domain-event consumer accepts its declared version and maps it to the correct tags;
+4. duplicate local and remote invalidations are harmless and request work is deduplicated;
+5. independently mounted slot contributions observe the same cache without importing each other;
+6. actor or tenant changes clear cached data and terminate the previous event subscription.
+
 ## Dependency Boundaries
 
 ```txt
 core ────────────────────────────► core only
 context domain ──────────────────► core + its own domain
-feature ─────────────────────────► core + its own domain + itself
+feature ─────────────────────────► core + itself + own domain + versioned context contracts
 adapter (HTTP/MCP/UI) ───────────► core + its registered feature contract
 cross-context work ──────────────► versioned contracts or domain events only
 ```
@@ -169,6 +261,7 @@ Forbidden dependencies:
 
 - core → context or feature;
 - feature → another feature;
+- versioned frontend contract → React, hooks, transport, cache runtime, or feature behavior;
 - a context → another context’s domain or feature;
 - direct MongoDB/HTTP/MCP/provider SDK access from a feature;
 - circular imports.

@@ -31,4 +31,3 @@ Each contribution has:
 The application owns stable extension points, while add-ons contribute UI independently.
 
 In AIFA terms, it makes frontend customization atomic too.
-

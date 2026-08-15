@@ -1,1 +1,26 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","additionalProperties":false,"required":["suggestions"],"properties":{"suggestions":{"type":"array","items":{"$ref":"https://aifa.dev/ai-planning/contracts/v1/task-plan-suggestion.schema.json"}}}}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GenerateTaskPlanOutputV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["suggestions", "provenance"],
+  "properties": {
+    "suggestions": {
+      "type": "array",
+      "items": {
+        "$ref": "https://aifa.dev/ai-planning/contracts/v1/task-plan-suggestion.schema.json"
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "model", "promptVersion", "latencyMs"],
+      "properties": {
+        "provider": { "type": "string" },
+        "model": { "type": "string" },
+        "promptVersion": { "type": "string" },
+        "latencyMs": { "type": "number", "minimum": 0 }
+      }
+    }
+  }
+}

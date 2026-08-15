@@ -34,4 +34,3 @@ export const deleteTask = defineFeature({
     return context.ok({ deleted: true });
   },
 });
-

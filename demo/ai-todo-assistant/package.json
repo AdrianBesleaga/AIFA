@@ -4,19 +4,53 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "dev": "concurrently \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "tsx watch core/backend/server.ts",
+    "dev:web": "vite --host 127.0.0.1",
+    "mcp": "tsx core/backend/mcp.ts",
+    "outbox": "tsx core/backend/outbox/worker.ts",
+    "start": "node dist/server/core/backend/server.js",
+    "start:mcp": "node dist/server/core/backend/mcp.js",
+    "start:outbox": "node dist/server/core/backend/outbox/worker.js",
+    "build": "npm run generate:contracts && tsc --noEmit && npm run build:server && vite build && npm run check:bundle",
+    "build:server": "tsc -p tsconfig.server.json && node core/architecture/copy-server-assets.mjs",
     "validate:architecture": "tsx core/architecture/validate-feature-definitions.ts",
     "generate:contracts": "tsx core/architecture/generate-contract-types.ts",
-    "check:imports": "depcruise --config core/architecture/.dependency-cruiser.cjs .",
+    "check:imports": "depcruise --config core/architecture/.dependency-cruiser.cjs core contexts composition tests",
+    "test": "tsx --test tests/*.test.ts tests/*.test.tsx",
+    "test:integration": "tsx --test tests/mongo.integration.test.ts",
+    "test:smoke": "node tests/built-server.smoke.mjs",
+    "check:bundle": "node core/architecture/check-bundle-size.mjs",
     "check": "npm run validate:architecture && npm run generate:contracts && npm run check:imports && tsc --noEmit"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
+    "concurrently": "^9.1.2",
     "dependency-cruiser": "^16.10.0",
     "json-schema-to-typescript": "^15.0.4",
+    "mongodb-memory-server": "^11.2.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   },
-  "engines": { "node": ">=20" }
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "@mui/icons-material": "^7.0.2",
+    "@mui/material": "^7.0.2",
+    "dotenv": "^16.4.7",
+    "jose": "^6.2.9",
+    "mongodb": "^6.12.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "vite": "^6.0.7",
+    "zod": "^4.4.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
 }

@@ -1,1 +1,12 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","additionalProperties":false,"required":["taskId","status","expectedVersion","idempotencyKey"],"properties":{"taskId":{"type":"string","minLength":1},"status":{"enum":["Todo","InProgress","Completed"]},"expectedVersion":{"type":"integer","minimum":1},"idempotencyKey":{"type":"string","minLength":16,"maxLength":128}}}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChangeTaskStatusInputV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["taskId", "status", "expectedVersion"],
+  "properties": {
+    "taskId": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["Todo", "InProgress", "Completed"] },
+    "expectedVersion": { "type": "integer", "minimum": 1 }
+  }
+}

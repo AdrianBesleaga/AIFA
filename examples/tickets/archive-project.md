@@ -38,4 +38,3 @@ Allow an authorized actor to archive one project.
 - Returns success for an already archived project.
 - Rejects an actor without archive permission.
 - Returns `not_found` for a missing project.
-

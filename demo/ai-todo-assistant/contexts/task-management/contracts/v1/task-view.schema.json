@@ -4,7 +4,17 @@
   "title": "TaskView V1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "title", "category", "priority", "status", "version", "createdAt", "updatedAt", "completedAt"],
+  "required": [
+    "id",
+    "title",
+    "category",
+    "priority",
+    "status",
+    "version",
+    "createdAt",
+    "updatedAt",
+    "completedAt"
+  ],
   "properties": {
     "id": { "type": "string", "minLength": 1 },
     "title": { "type": "string", "minLength": 1, "maxLength": 240 },

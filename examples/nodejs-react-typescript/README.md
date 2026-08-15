@@ -97,19 +97,19 @@ File-backed storage
 
 ## Atomic Backend Features
 
-| Feature | Route | Purpose |
-| --- | --- | --- |
-| `create-task` | `POST /api/tasks` | Create one task |
-| `list-tasks` | `GET /api/tasks` | List tasks |
+| Feature         | Route                          | Purpose           |
+| --------------- | ------------------------------ | ----------------- |
+| `create-task`   | `POST /api/tasks`              | Create one task   |
+| `list-tasks`    | `GET /api/tasks`               | List tasks        |
 | `complete-task` | `POST /api/tasks/:id/complete` | Complete one task |
-| `reopen-task` | `POST /api/tasks/:id/reopen` | Reopen one task |
-| `delete-task` | `DELETE /api/tasks/:id` | Delete one task |
+| `reopen-task`   | `POST /api/tasks/:id/reopen`   | Reopen one task   |
+| `delete-task`   | `DELETE /api/tasks/:id`        | Delete one task   |
 
 ## Frontend Slots
 
-| Slot | Model | Purpose |
-| --- | --- | --- |
-| `APP_HEADER_ACTIONS` | `{ tasks, refreshTasks }` | Add header-level actions |
-| `TASK_SUMMARY_CARDS` | `{ tasks }` | Add dashboard summary cards |
-| `TASK_ACTIONS` | `{ task, completeTask, reopenTask, deleteTask }` | Add row-level task actions |
-| `EMPTY_STATE_ACTIONS` | `{ createExampleTask }` | Add empty state actions |
+| Slot                  | Model                                            | Purpose                     |
+| --------------------- | ------------------------------------------------ | --------------------------- |
+| `APP_HEADER_ACTIONS`  | `{ tasks, refreshTasks }`                        | Add header-level actions    |
+| `TASK_SUMMARY_CARDS`  | `{ tasks }`                                      | Add dashboard summary cards |
+| `TASK_ACTIONS`        | `{ task, completeTask, reopenTask, deleteTask }` | Add row-level task actions  |
+| `EMPTY_STATE_ACTIONS` | `{ createExampleTask }`                          | Add empty state actions     |
