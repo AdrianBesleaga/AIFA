@@ -5,6 +5,7 @@ import type {
   ShellModel,
   TaskListModel,
   TaskRowActionsModel,
+  TaskSuggestionActionsModel,
 } from "../app-model.js";
 
 export interface SlotModelMap {
@@ -16,6 +17,7 @@ export interface SlotModelMap {
   [SlotName.TaskList]: TaskListModel;
   [SlotName.TaskRowActions]: TaskRowActionsModel;
   [SlotName.AssistantPanel]: EmptySlotModel;
+  [SlotName.TaskSuggestionActions]: TaskSuggestionActionsModel;
   [SlotName.SettingsPanel]: ShellModel;
 }
 

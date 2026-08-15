@@ -62,5 +62,9 @@ export async function ensurePlatformIndexes(database: Db): Promise<void> {
       { "delivery.status": 1, "delivery.availableAt": 1, "event.occurredAt": 1 },
       { name: "outbox_delivery" },
     ),
+    database.collection("outbox_events").createIndex(
+      { "event.tenantId": 1, "event.occurredAt": 1, "event.eventId": 1 },
+      { name: "tenant_event_stream" },
+    ),
   ]);
 }

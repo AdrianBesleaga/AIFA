@@ -35,6 +35,7 @@ export enum SlotName {
   TaskList = "TaskList",
   TaskRowActions = "TaskRowActions",
   AssistantPanel = "AssistantPanel",
+  TaskSuggestionActions = "TaskSuggestionActions",
   SettingsPanel = "SettingsPanel",
 }
 
@@ -52,6 +53,7 @@ export enum PermissionScope {
   TaskDelete = "TaskDelete",
   AssistantPlanGenerate = "AssistantPlanGenerate",
   SettingsRead = "SettingsRead",
+  EventRead = "EventRead",
 }
 
 export enum HttpMethod {

@@ -17,11 +17,12 @@
     "validate:architecture": "tsx core/architecture/validate-feature-definitions.ts",
     "generate:contracts": "tsx core/architecture/generate-contract-types.ts",
     "check:imports": "depcruise --config core/architecture/.dependency-cruiser.cjs core contexts composition tests",
+    "check:import-fixtures": "node core/architecture/check-import-boundary-fixtures.mjs",
     "test": "tsx --test tests/*.test.ts tests/*.test.tsx",
     "test:integration": "tsx --test tests/mongo.integration.test.ts",
     "test:smoke": "node tests/built-server.smoke.mjs",
     "check:bundle": "node core/architecture/check-bundle-size.mjs",
-    "check": "npm run generate:contracts && npm run validate:architecture && npm run check:imports && tsc --noEmit"
+    "check": "npm run generate:contracts && npm run validate:architecture && npm run check:imports && npm run check:import-fixtures && tsc --noEmit"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",

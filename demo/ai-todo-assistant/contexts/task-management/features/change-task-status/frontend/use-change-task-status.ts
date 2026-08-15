@@ -1,6 +1,7 @@
-import { api } from "../../../../../core/frontend/api.js";
-import { useMutation, useQueryClient } from "../../../../../core/frontend/query/react-query.js";
+import { commandApi } from "../../../../../core/frontend/api.js";
+import { useCommandMutation, useQueryClient } from "../../../../../core/frontend/query/react-query.js";
 import type { TaskViewV1 } from "../../../../../core/shared/generated/contracts.js";
+import { HttpMethod } from "../../../../../core/shared/architecture-enums.js";
 import { TaskCacheTag } from "../../../contracts/v1/task-cache.js";
 import type { TaskStatus } from "../../../contracts/v1/task-taxonomy.js";
 
@@ -11,14 +12,15 @@ interface ChangeTaskStatusInput {
 
 export function useChangeTaskStatus() {
   const queryClient = useQueryClient();
-  return useMutation<ChangeTaskStatusInput, TaskViewV1>({
-    mutationFn: async ({ task, status }) =>
+  return useCommandMutation<ChangeTaskStatusInput, TaskViewV1>({
+    commandFn: async ({ task, status }, commandId) =>
       (
-        await api<{ task: TaskViewV1 }>(`/api/tasks/${task.id}/status`, {
-          method: "PATCH",
-          headers: { "idempotency-key": crypto.randomUUID() },
-          body: JSON.stringify({ status, expectedVersion: task.version }),
-        })
+        await commandApi<{ task: TaskViewV1 }>(
+          `/api/tasks/${task.id}/status`,
+          commandId,
+          { status, expectedVersion: task.version },
+          HttpMethod.Patch,
+        )
       ).task,
     onSuccess: () => queryClient.invalidateTags([TaskCacheTag.Collection]),
   });

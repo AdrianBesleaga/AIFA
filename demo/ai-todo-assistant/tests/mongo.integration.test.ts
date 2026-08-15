@@ -8,6 +8,7 @@ import { FeatureName } from "../core/shared/generated/feature-names.js";
 import { DomainEventType, OutboxStatus } from "../core/shared/architecture-enums.js";
 import { createMongoOutboxStore } from "../core/backend/outbox/mongo-outbox.js";
 import { createMongoPlatformCapabilities } from "../core/backend/runtime/mongo-platform-capabilities.js";
+import { createMongoEventStreamStore } from "../core/backend/events/event-stream.js";
 import { discoverFeatureManifests } from "../core/backend/discovery/discover-features.js";
 import {
   createMongoTaskCapabilities,
@@ -201,6 +202,16 @@ test("Mongo task capability enforces tenant isolation and optimistic concurrency
     assert.deepEqual(eventManifest.backend.contract.validateEvent(auditEvent), []);
     const storedOutbox = await database.collection("outbox_events").findOne({ "event.eventId": auditEvent?.eventId });
     assert.deepEqual(eventManifest.backend.contract.validateEvent(storedOutbox?.event), []);
+    const eventStream = createMongoEventStreamStore(database);
+    assert.equal(
+      (await eventStream.readAfter(actorA.tenantId, { occurredAt: new Date(0).toISOString(), seenEventIds: [] }, 10)).length,
+      1,
+    );
+    assert.equal(
+      (await eventStream.readAfter(actorB.tenantId, { occurredAt: new Date(0).toISOString(), seenEventIds: [] }, 10)).length,
+      0,
+      "event delivery is tenant scoped",
+    );
 
     await database.collection("outbox_events").deleteMany({});
     await database.collection("outbox_events").insertOne({

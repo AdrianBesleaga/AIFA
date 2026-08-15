@@ -135,7 +135,7 @@ Status legend:
 - [x] Configuration validates ports and URLs; liveness and MongoDB readiness are separate endpoints.
 - [x] Tests now cover contract boundaries, capability failures, tenant overrides, event schemas, fencing, and concurrent outbox claims.
 - [x] Production contributions are code-split and MUI icons use direct imports.
-  - The build now transforms about 957 modules; the largest chunk is about 358 kB.
+  - The build now transforms about 972 modules; the largest chunk is about 368 kB.
   - CI enforces a 400 kB largest-chunk and 600 kB total-JavaScript budget.
 - [x] Generated contracts are used by frontend DTOs and selected feature inputs/outputs; runtime schemas remain authoritative.
   - Schema titles produce stable names, and generation deduplicates identical declarations while rejecting conflicts.
@@ -152,7 +152,22 @@ Status legend:
 ## Verification status
 
 - [x] `npm run check`
-- [x] `npm test` — 18 tests passing
+- [x] `npm test` — 23 tests passing
 - [x] `npm run build` — server and web artifacts produced
 - [x] Built-server smoke test
 - [x] Browser end-to-end verification
+
+## Follow-up review remediation — 2026-08-15
+
+- [x] Browser command hooks retain a stable command ID after unknown transport outcomes and use a
+  new ID only after a success or definitive HTTP failure.
+- [x] Browser OIDC requests explicit configurable application scopes, including `EventRead` for
+  the live event boundary.
+- [x] Native `EventSource` was replaced with bearer-authenticated fetch streaming; `/api/events`
+  reads tenant-scoped committed outbox events and supports opaque reconnect cursors.
+- [x] Dependency rules now reject feature/domain imports from `core/backend`, Node runtime modules,
+  MongoDB, MCP, identity, environment, and provider packages; executable negative fixtures guard
+  the rules themselves.
+- [x] Suggestion acceptance is a separate discovered feature composed through the typed
+  `TaskSuggestionActions` slot. AI Planning no longer knows the Task Management route, hook, or
+  cache tag.

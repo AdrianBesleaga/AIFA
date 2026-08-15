@@ -1,5 +1,5 @@
-import { api } from "../../../../../core/frontend/api.js";
-import { useMutation, useQueryClient } from "../../../../../core/frontend/query/react-query.js";
+import { commandApi } from "../../../../../core/frontend/api.js";
+import { useCommandMutation, useQueryClient } from "../../../../../core/frontend/query/react-query.js";
 import type { TaskViewV1 } from "../../../../../core/shared/generated/contracts.js";
 import { TaskCacheTag } from "../../../contracts/v1/task-cache.js";
 import type { TaskCategory, TaskPriority } from "../../../contracts/v1/task-taxonomy.js";
@@ -12,14 +12,10 @@ export interface CreateTaskInput {
 
 export function useCreateTask() {
   const queryClient = useQueryClient();
-  return useMutation<CreateTaskInput, TaskViewV1>({
-    mutationFn: async (input) =>
+  return useCommandMutation<CreateTaskInput, TaskViewV1>({
+    commandFn: async (input, commandId) =>
       (
-        await api<{ task: TaskViewV1 }>("/api/tasks", {
-          method: "POST",
-          headers: { "idempotency-key": crypto.randomUUID() },
-          body: JSON.stringify(input),
-        })
+        await commandApi<{ task: TaskViewV1 }>("/api/tasks", commandId, input)
       ).task,
     onSuccess: () => queryClient.invalidateTags([TaskCacheTag.Collection]),
   });

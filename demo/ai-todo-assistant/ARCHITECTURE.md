@@ -42,6 +42,7 @@ demo/ai-todo-assistant/
       domain/                    # Task invariants and value objects
       features/
         create-task/
+        accept-task-suggestion/
         list-tasks/
         change-task-status/
         delete-task/
@@ -81,7 +82,7 @@ The task-status transition invariant lives here. Features invoke it; they do not
 
 ### AI Planning
 
-Owns the persisted `TaskPlan` aggregate, validated task-plan suggestions, and the rules for safely turning provider output into task categories and priorities. Generating a plan creates a tenant-owned review record and emits `TaskPlanGeneratedV1`; it does not create tasks. Accepted suggestions use the Create Task feature boundary.
+Owns the persisted `TaskPlan` aggregate, validated task-plan suggestions, and the rules for safely turning provider output into task categories and priorities. Generating a plan creates a tenant-owned review record and emits `TaskPlanGeneratedV1`; it does not create tasks. The independent Task Management `accept-task-suggestion` feature consumes the published suggestion contract and contributes its action through the typed `TaskSuggestionActions` slot. AI Planning therefore does not know an acceptance route or import another feature's hook.
 
 Contexts do not import each other’s domain or feature modules. They communicate using versioned contracts or domain events.
 
@@ -91,7 +92,7 @@ Contexts do not import each other’s domain or feature modules. They communicat
 
 Every request—HTTP, MCP, browser, or provider callback—must resolve to an `Actor` containing a `TenantId`, `UserId`, and enum-backed permission scopes. Anonymous mutation is prohibited.
 
-Browser authentication uses an OpenID Connect authorization-code flow with PKCE. The remote MCP endpoint uses Streamable HTTP and acts as an OAuth 2.1 protected resource: it validates bearer-token audience, expiry, tenant, user, and scopes on every request. A local stdio MCP connection obtains its credentials from the local environment and is restricted to the configured tenant. Token revocation, client registration, and scope assignment are owned by the identity adapter in core.
+Browser authentication uses an OpenID Connect authorization-code flow with PKCE. The browser requests the application scopes configured by `VITE_OIDC_SCOPES`; live event delivery additionally requires `EventRead`. The remote MCP endpoint uses Streamable HTTP and acts as an OAuth 2.1 protected resource: it validates bearer-token audience, expiry, tenant, user, and scopes on every request. A local stdio MCP connection obtains its credentials from the local environment and is restricted to the configured tenant. Token revocation, client registration, and scope assignment are owned by the identity adapter in core.
 
 ### Authorization Middleware
 
@@ -109,6 +110,10 @@ MCP authentication maps each client connection to an actor and only exposes tool
 
 Every mutation has a caller-supplied idempotency key and expected task version where relevant. The idempotency store atomically claims a key before feature execution, records a fenced execution identifier, and persists the command result on completion. A bounded lease lets a retry recover from a crashed worker without allowing an earlier execution to overwrite the recovered result. HTTP or MCP retries return the original completed result without repeating persistence or audit work.
 
+Browser command hooks allocate one command identifier for each user intent. A successful response or
+a definitive HTTP failure settles that identifier; an unknown transport outcome retains it so a
+retry replays the same durable command instead of creating a duplicate task or plan.
+
 Features use typed failures for `VersionConflict`, `IdempotencyKeyReuse`, `NotAuthorized`, and `ConfirmationRequired`. These failures are part of each adapter contract, not raw infrastructure errors.
 
 ## Events, Audit, and Outbox
@@ -120,7 +125,12 @@ Within the MongoDB transaction for a successful mutation, the runtime writes the
 - `TaskDeletedV1`
 - `TaskPlanGeneratedV1`
 
-An outbox publisher delivers events asynchronously and records delivery state. Consumers receive versioned event contracts, never direct imports from another context. This preserves reliability without coupling feature implementations.
+An outbox publisher delivers events asynchronously and records delivery state. The authenticated
+`/api/events` SSE boundary also reads the tenant's committed outbox records in event order for live
+browser synchronization. Opaque cursors allow reconnects to resume without relying on browser
+cookies or exposing tenant identity in the request. Consumers receive versioned event contracts,
+never direct imports from another context. This preserves reliability without coupling feature
+implementations.
 
 ## Feature Slice Contract
 
@@ -224,7 +234,7 @@ browser. The successful command hook invalidates affected tags without waiting f
 outbox event to return to that browser.
 
 Tasks may also be created by MCP clients, another browser, another actor, or background processing.
-For those cases, a generic core SSE or WebSocket adapter delivers validated versioned domain events
+For those cases, the generic core authenticated-fetch SSE adapter delivers validated versioned domain events
 to dynamically registered frontend event consumers. A Task Management consumer maps
 `TaskCreatedV1`, `TaskStatusChangedV1`, and `TaskDeletedV1` to the same `TaskCollection`
 invalidation. Receiving both the local-success invalidation and its later domain event is expected;
@@ -245,14 +255,15 @@ Focused frontend tests must verify that:
 3. each domain-event consumer accepts its declared version and maps it to the correct tags;
 4. duplicate local and remote invalidations are harmless and request work is deduplicated;
 5. independently mounted slot contributions observe the same cache without importing each other;
-6. actor or tenant changes clear cached data and terminate the previous event subscription.
+6. actor or tenant changes clear cached data and terminate the previous event subscription;
+7. reconnects reuse the last opaque event cursor and event reads remain tenant scoped.
 
 ## Dependency Boundaries
 
 ```txt
 core ────────────────────────────► core only
 context domain ──────────────────► core + its own domain
-feature ─────────────────────────► core + itself + own domain + versioned context contracts
+feature ─────────────────────────► core shared/frontend APIs + itself + own domain + versioned context contracts
 adapter (HTTP/MCP/UI) ───────────► core + its registered feature contract
 cross-context work ──────────────► versioned contracts or domain events only
 ```
@@ -267,6 +278,10 @@ Forbidden dependencies:
 - circular imports.
 
 `npm run check:imports` runs dependency-cruiser in CI to enforce import boundaries and circular-import rules. `validate-feature-definitions.ts` validates feature JSON, enum references, contract files, routes, MCP tools, security invariants, and the declared dependency graph.
+
+Feature and domain code are explicitly denied imports from `core/backend`, Node runtime modules,
+MongoDB, MCP, identity, environment, and provider packages. `npm run check:import-fixtures` executes
+deliberately invalid source fixtures so a weakened dependency rule makes the architecture gate fail.
 
 ## AIFA Runtime Rules
 

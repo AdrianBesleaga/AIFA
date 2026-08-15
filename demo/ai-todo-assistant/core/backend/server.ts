@@ -16,6 +16,7 @@ import { ErrorCode, HttpMethod } from "../shared/architecture-enums.js";
 import type { Actor, RequestMetadata } from "../shared/aifa.js";
 import type { FeatureManifest } from "../shared/feature-manifest.js";
 import { createRemoteMcpHandler } from "./mcp-http.js";
+import { createEventStreamHandler, createMongoEventStreamStore } from "./events/event-stream.js";
 
 const memoryServer = config.mongoUri
   ? undefined
@@ -192,7 +193,13 @@ const remoteMcpHandler = createRemoteMcpHandler({
   resourceUrl: new URL("/mcp", config.publicBaseUrl).href,
   authorizationServer: config.oidcIssuerUrl,
 });
+const eventStreamHandler = createEventStreamHandler({
+  store: createMongoEventStreamStore(mongoDatabase),
+  resolveActor,
+  corsOrigin: config.corsOrigin,
+});
 const server = createServer(async (request, response) => {
+  if (await eventStreamHandler(request, response)) return;
   if (await remoteMcpHandler(request, response)) return;
   await apiHandler(request, response);
 });

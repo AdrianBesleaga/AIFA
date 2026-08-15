@@ -50,14 +50,15 @@ Each feature lives under `contexts/<context>/features/<feature-name>/` and owns 
 - `contracts/` — JSON Schema input and output contracts.
 - `IMPLEMENTATION_PLAN.md` — the human-readable implementation guide.
 
-The current feature set includes Create Task, List Tasks, Change Task Status, Delete Task, Generate Task Plan, and Manage AI Settings.
+The current feature set includes Create Task, List Tasks, Change Task Status, Delete Task,
+Generate Task Plan, Accept Task Suggestion, and Manage AI Settings.
 
 ### Typed UI slots
 
 The React shell owns layout and composition, while feature slices contribute their own UI through typed slots such as:
 
 - `AppHeader`, `AppNavigation`, `AppContent`, and `AppFooter`
-- `TaskComposer`, `TaskList`, `TaskRowActions`, and `AssistantPanel`
+- `TaskComposer`, `TaskList`, `TaskRowActions`, `AssistantPanel`, and `TaskSuggestionActions`
 - `SettingsPanel`
 
 Frontend contributions are discovered automatically. Adding a feature does not require maintaining a central list of product components.

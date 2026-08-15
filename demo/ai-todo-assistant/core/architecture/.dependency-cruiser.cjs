@@ -51,6 +51,26 @@ module.exports = {
       to: { path: "^contexts/[^/]+/infrastructure/" },
     },
     {
+      name: "product-code-cannot-import-core-backend",
+      severity: "error",
+      from: { path: "^contexts/[^/]+/(domain|features)/" },
+      to: { path: "^core/backend/" },
+    },
+    {
+      name: "features-cannot-import-node-runtime",
+      severity: "error",
+      from: { path: "^contexts/[^/]+/features/" },
+      to: { dependencyTypes: ["core"] },
+    },
+    {
+      name: "features-cannot-import-infrastructure-packages",
+      severity: "error",
+      from: { path: "^contexts/[^/]+/features/" },
+      to: {
+        path: "^(?:node_modules/)?(?:mongodb|@modelcontextprotocol/sdk|jose|dotenv)(?:/|$)",
+      },
+    },
+    {
       name: "domain-cannot-import-features-or-infrastructure",
       severity: "error",
       from: { path: "^contexts/[^/]+/domain/" },

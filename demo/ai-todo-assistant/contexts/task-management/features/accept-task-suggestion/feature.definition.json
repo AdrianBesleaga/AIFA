@@ -1,0 +1,52 @@
+{
+  "$schema": "../../../../core/architecture/feature-definition.schema.json",
+  "name": "accept-task-suggestion",
+  "boundedContext": "task-management",
+  "businessNeed": "Let a person explicitly turn one reviewed AI plan suggestion into a governed task.",
+  "dependsOn": ["generate-task-plan"],
+  "consumesContracts": [
+    "ai-planning/contracts/v1/task-plan-suggestion.schema.json",
+    "task-management/contracts/events/v1/task-created.schema.json"
+  ],
+  "backend": {
+    "route": "/api/task-plan-suggestions/accept",
+    "method": "POST",
+    "capabilities": ["TaskCreate", "IdCreate", "ClockNow", "DomainEventEmit"],
+    "mcp": { "exposed": false }
+  },
+  "frontend": {
+    "slots": ["TaskSuggestionActions"],
+    "eventConsumers": [
+      {
+        "name": "invalidate-task-collection-after-suggestion-acceptance",
+        "eventType": "TaskCreatedV1",
+        "contract": "task-management/contracts/events/v1/task-created.schema.json"
+      }
+    ]
+  },
+  "contracts": {
+    "input": "contracts/input.schema.json",
+    "output": "contracts/output.schema.json"
+  },
+  "events": ["task-management/contracts/events/v1/task-created.schema.json"],
+  "security": {
+    "mutation": true,
+    "actorRequired": true,
+    "idempotent": true,
+    "requiresConfirmation": false,
+    "concurrency": "none",
+    "mcpScopes": ["TaskWrite"]
+  },
+  "workItems": [
+    {
+      "id": "ATS-1",
+      "description": "Expose suggestion acceptance through its own governed feature contract.",
+      "acceptanceCriterion": "AI Planning contributes suggestion data without importing or calling Task Management feature code."
+    },
+    {
+      "id": "ATS-2",
+      "description": "Compose the acceptance action through a typed suggestion action slot.",
+      "acceptanceCriterion": "The accepting contribution is independently discovered and invalidates the task collection after success."
+    }
+  ]
+}

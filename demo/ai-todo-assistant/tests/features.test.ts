@@ -14,6 +14,7 @@ import { feature as changeStatus } from "../contexts/task-management/features/ch
 import { feature as deleteTask } from "../contexts/task-management/features/delete-task/backend/feature.js";
 import { feature as listTasks } from "../contexts/task-management/features/list-tasks/backend/feature.js";
 import { feature as generatePlan } from "../contexts/ai-planning/features/generate-task-plan/backend/feature.js";
+import { feature as acceptSuggestion } from "../contexts/task-management/features/accept-task-suggestion/backend/feature.js";
 import { resolveActor } from "../core/backend/auth/actor-resolver.js";
 import { publishPendingEvents } from "../core/backend/outbox/outbox-publisher.js";
 
@@ -144,6 +145,24 @@ test("AI planning stays provider-neutral and audits each plan", async () => {
   assert.equal(plans.length, 1);
   assert.deepEqual(audit, ["TaskPlanGeneratedV1"]);
   assert.equal(FeatureName.GenerateTaskPlan, generatePlan.name);
+});
+test("suggestion acceptance is an independent governed task mutation", async () => {
+  const { runtime, actor, metadata, audit } = fixture();
+  const result = await runtime.run(
+    acceptSuggestion,
+    {
+      title: "Review the launch checklist",
+      category: TaskCategory.Work,
+      priority: TaskPriority.High,
+      rationale: "Turn the reviewed suggestion into an explicit commitment",
+    },
+    actor,
+    metadata,
+  );
+  assert.equal(result.ok, true);
+  if (!result.ok) return;
+  assert.equal(result.value.task.title, "Review the launch checklist");
+  assert.deepEqual(audit, [DomainEventType.TaskCreatedV1]);
 });
 test("actor resolution accepts only configured scope values", async () => {
   assert.deepEqual(
