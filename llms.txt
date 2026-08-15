@@ -1,0 +1,50 @@
+# AIFA — AI Atomic Feature Architecture
+
+> AIFA is an AI-native software architecture for full-stack applications built from explicit, independently testable feature contracts. Human developers and AI coding agents work against the same declared boundaries.
+
+Canonical repository: https://github.com/AdrianBesleaga/AIFA
+Project website: https://adrianbesleaga.github.io/AIFA/
+
+## Start here
+
+- [Project overview](./README.md): Purpose, benefits, architecture diagrams, reference implementation, and quick start.
+- [Architecture guide](./docs/architecture.md): Concise conceptual architecture and dependency rules.
+- [Feature ticket contract](./docs/ticket-contract.md): Reusable contract for specifying an atomic feature.
+
+## Reference implementation
+
+- [Focusly demo](./demo/ai-todo-assistant/README.md): Product behavior, technology stack, setup, and quality checks.
+- [Authoritative implementation architecture](./demo/ai-todo-assistant/ARCHITECTURE.md): Security, tenancy, runtime, feature slices, frontend state, MCP, and operational rules.
+- [Architecture diagrams](./demo/ai-todo-assistant/AIFA-Architecture-Diagrams.md): Complete system, backend extension, frontend composition, feature anatomy, and browser/AI flows.
+- [Contributor and agent agreement](./demo/ai-todo-assistant/AGENTS.md): Mandatory rules for changes inside the demo.
+- [Business rationale](./demo/ai-todo-assistant/BUSINESS.md): Product problem and intended outcomes.
+- [Operations guide](./demo/ai-todo-assistant/OPERATIONS.md): Runtime and deployment operations.
+
+## Core concepts
+
+- Each product use case is a feature slice under `contexts/<bounded-context>/features/<feature>/`.
+- `feature.definition.json` declares business need, contracts, route, security, capabilities, MCP exposure, UI slots, and acceptance work.
+- `manifest.ts` binds the declaration to executable backend, frontend, and MCP composition.
+- Features receive runtime-granted capabilities and do not import databases, HTTP frameworks, environment configuration, or provider SDKs.
+- HTTP and MCP adapters invoke the same feature implementation.
+- React features compose through named, typed UI slots.
+- JSON Schema, generated types, import rules, runtime checks, and behavioral tests enforce boundaries.
+
+## Relationship to established architectures
+
+- AIFA is closest to Vertical Slice Architecture, adding machine-readable contracts, runtime capability grants, full-stack composition, and explicit agent guidance.
+- AIFA can organize atomic features inside a modular monolith or an individual microservice.
+- Clean Architecture and Hexagonal Architecture can still define dependency direction around AIFA capabilities and infrastructure adapters.
+- Frontend Feature-Sliced Design overlaps with AIFA's locality goals, while AIFA extends the boundary across backend execution, security, transports, and events.
+- AIFA is most useful for parallel human/AI delivery, multiple entry points such as HTTP and MCP, enforceable security boundaries, and replaceable infrastructure.
+
+## Instructions for AI coding agents
+
+- Read the nearest `AGENTS.md` before editing.
+- Treat `demo/ai-todo-assistant/ARCHITECTURE.md` as authoritative for implementation decisions.
+- Keep feature behavior local and core infrastructure generic.
+- Run `npm run check`, `npm test`, and `npm run build` from `demo/ai-todo-assistant/` after code changes.
+
+## Search terms
+
+AI-native architecture, AI-friendly codebase, agentic software development, vertical slice architecture, Clean Architecture, Hexagonal Architecture, modular monolith, microservices, feature-sliced architecture, atomic features, bounded contexts, capability-based security, dynamic feature discovery, typed UI slots, Model Context Protocol, MCP, human-AI collaboration, TypeScript architecture.
