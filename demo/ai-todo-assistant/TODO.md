@@ -47,11 +47,13 @@ Update this checklist as work is completed. Read [ARCHITECTURE.md](ARCHITECTURE.
 - [x] Implement persisted generated TaskPlan records and initial review state.
 - [x] Implement the Ollama provider adapter with structured-output validation, timeouts, and safe local fallback.
 - [x] Implement the Generate Task Plan feature: backend, MUI assistant panel, MCP tool, manifest, and tests.
-- [x] Implement suggestion acceptance through the Create Task API boundary.
+- [x] Implement suggestion acceptance as an independent Task Management feature composed through the typed `TaskSuggestionActions` slot.
 
 ## React Application
 
 - [x] Introduce the generic frontend query/event runtime, versioned context cache tags, and feature-local query/command hooks; replace workspace-wide command orchestration with semantic cache invalidation.
+- [x] Preserve browser command IDs across unknown transport outcomes and settle them only after a definitive result.
+- [x] Deliver tenant-scoped outbox events through an authenticated, resumable SSE boundary.
 - [x] Create the MUI theme, React shell, API client, typed slot registry, and dynamic frontend discovery.
 - [x] Build the category-based task board.
 - [x] Build task-category and task-status filtering.
@@ -64,6 +66,7 @@ Update this checklist as work is completed. Read [ARCHITECTURE.md](ARCHITECTURE.
 
 ## Quality and Release Readiness
 
+- [x] Centralize command transport and task construction, remove taxonomy casts, and clean up event-stream lifecycle helpers.
 - [x] Add feature-level runtime behavioral tests.
 - [x] Add disposable-database MongoDB integration coverage (CI service and local opt-in script).
 - [x] Add HTTP authentication/idempotency boundary and task tenant/concurrency integration coverage; MCP parity remains covered through manifest-driven adapter composition.

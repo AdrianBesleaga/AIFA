@@ -5,8 +5,7 @@
   "businessNeed": "Save users from manually decomposing goals by generating reviewable, categorized task suggestions from natural language.",
   "dependsOn": [],
   "consumesContracts": [
-    "task-management/contracts/v1/task-taxonomy.schema.json",
-    "task-management/contracts/v1/task-cache.schema.json"
+    "task-management/contracts/v1/task-taxonomy.schema.json"
   ],
   "backend": {
     "route": "/api/assistant/task-plan",
@@ -49,7 +48,7 @@
     {
       "id": "AIP-3",
       "description": "Register the MUI suggestion-review panel.",
-      "acceptanceCriterion": "Accepted suggestions use the create-task API boundary."
+      "acceptanceCriterion": "Acceptance actions compose through the typed TaskSuggestionActions slot without a direct feature call."
     }
   ]
 }

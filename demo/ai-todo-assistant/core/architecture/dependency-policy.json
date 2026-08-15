@@ -2,13 +2,15 @@
   "layers": ["core", "bounded-context-domain", "feature", "adapter"],
   "allowedImports": {
     "core": ["core"],
-    "bounded-context-domain": ["core", "bounded-context-domain"],
-    "feature": ["core", "bounded-context-domain", "feature-self"],
+    "bounded-context-domain": ["core-shared-contracts", "bounded-context-domain"],
+    "feature": ["core-shared-contracts", "core-frontend-runtime", "bounded-context-domain", "feature-self", "versioned-context-contracts"],
     "adapter": ["core", "feature"]
   },
   "forbidden": [
     "core-to-context-or-feature",
     "feature-to-other-feature",
+    "feature-to-core-backend",
+    "feature-to-runtime-or-infrastructure-package",
     "cross-context-domain-import",
     "circular-import"
   ],

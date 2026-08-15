@@ -5,6 +5,8 @@ import { TaskCacheTag, TaskQueryName } from "../contexts/task-management/contrac
 import { DomainEventType } from "../core/shared/architecture-enums.js";
 import { FrontendEventRegistry } from "../core/frontend/events/event-registry.js";
 import { QueryClient } from "../core/frontend/query/query-client.js";
+import { CommandIdStore, commandFingerprint } from "../core/frontend/commands/command-id-store.js";
+import { ApiResponseError, isDefinitiveCommandFailure } from "../core/frontend/api.js";
 
 async function settle(): Promise<void> {
   await new Promise<void>((resolve) => setTimeout(resolve, 0));
@@ -91,5 +93,34 @@ test("frontend event consumers reject unsupported contract versions", async () =
       { queryClient: new QueryClient() },
     ),
     /failed consumer validation/,
+  );
+});
+
+test("browser command IDs survive unknown outcomes and settle after a definitive result", () => {
+  const store = new CommandIdStore();
+  const input = { title: "Ship", details: { priority: "High", category: "Work" } };
+  const first = store.get(input);
+  assert.equal(
+    store.get({ details: { category: "Work", priority: "High" }, title: "Ship" }),
+    first,
+    "canonical input reuses the command after a transport failure",
+  );
+  store.settle(input);
+  assert.notEqual(store.get(input), first, "a settled user intent receives a fresh command ID");
+  assert.equal(
+    commandFingerprint({ b: 2, a: 1 }),
+    commandFingerprint({ a: 1, b: 2 }),
+  );
+  assert.equal(
+    isDefinitiveCommandFailure(new ApiResponseError("still running", 409, "RequestInProgress")),
+    false,
+  );
+  assert.equal(
+    isDefinitiveCommandFailure(new ApiResponseError("invalid", 422, "InvalidInput")),
+    true,
+  );
+  assert.equal(
+    isDefinitiveCommandFailure(new ApiResponseError("server failed", 500, "InternalError")),
+    false,
   );
 });

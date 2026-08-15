@@ -20,8 +20,9 @@ import {
 } from "../../../../task-management/contracts/v1/task-taxonomy.js";
 import type { TaskPlanSuggestionV1 } from "../../../../../core/shared/generated/contracts.js";
 import type { SlotContribution } from "../../../../../core/frontend/slots/slot-registry.js";
+import { Slot } from "../../../../../core/frontend/slots/Slot.js";
 import { SlotName } from "../../../../../core/shared/architecture-enums.js";
-import { useAcceptTaskSuggestion, useGenerateTaskPlan } from "./use-generate-task-plan.js";
+import { useGenerateTaskPlan } from "./use-generate-task-plan.js";
 
 function Planner() {
   const [goal, setGoal] = useState("");
@@ -29,7 +30,6 @@ function Planner() {
   const [priority, setPriority] = useState(TaskPriority.Medium);
   const [suggestions, setSuggestions] = useState<TaskPlanSuggestionV1[]>([]);
   const generatePlan = useGenerateTaskPlan();
-  const acceptSuggestion = useAcceptTaskSuggestion();
   return (
     <Paper
       elevation={0}
@@ -42,9 +42,9 @@ function Planner() {
         p: { xs: 2.5, md: 3.5 },
       }}
     >
-      {(generatePlan.error || acceptSuggestion.error) && (
+      {generatePlan.error && (
         <Alert severity="error" sx={{ mb: 2, position: "relative" }}>
-          {(generatePlan.error ?? acceptSuggestion.error)?.message}
+          {generatePlan.error.message}
         </Alert>
       )}
       <Box
@@ -191,15 +191,7 @@ function Planner() {
                   label={suggestion.category}
                   sx={{ bgcolor: "rgba(255,255,255,.12)", color: "white" }}
                 />
-                <Button
-                  size="small"
-                  variant="contained"
-                  disabled={acceptSuggestion.isPending}
-                  onClick={() => void acceptSuggestion.mutate(suggestion)}
-                  sx={{ bgcolor: "white", color: "#171923" }}
-                >
-                  Add task
-                </Button>
+                <Slot name={SlotName.TaskSuggestionActions} model={{ suggestion }} />
               </Stack>
             </Paper>
           ))}

@@ -16,3 +16,18 @@ export enum TaskStatus {
   InProgress = "InProgress",
   Completed = "Completed",
 }
+
+function parseEnumValue<Value extends string>(
+  values: readonly Value[],
+  value: string,
+): Value | undefined {
+  return values.find((candidate) => candidate === value);
+}
+
+export function parseTaskCategory(value: string): TaskCategory | undefined {
+  return parseEnumValue(Object.values(TaskCategory), value);
+}
+
+export function parseTaskPriority(value: string): TaskPriority | undefined {
+  return parseEnumValue(Object.values(TaskPriority), value);
+}

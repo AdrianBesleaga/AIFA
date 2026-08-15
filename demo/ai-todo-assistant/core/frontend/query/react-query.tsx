@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useMemo,
+  useRef,
   useState,
   useSyncExternalStore,
   type ReactNode,
@@ -13,6 +14,8 @@ import {
   type QueryOptions,
   type QuerySnapshot,
 } from "./query-client.js";
+import { isDefinitiveCommandFailure } from "../api.js";
+import { CommandIdStore } from "../commands/command-id-store.js";
 
 const QueryClientContext = createContext<QueryClient | null>(null);
 
@@ -92,4 +95,34 @@ export function useMutation<Input, Value>(
     [options],
   );
   return { mutate, isPending: pendingCount > 0, error, reset: () => setError(undefined) };
+}
+
+export interface CommandMutationOptions<Input, Value> {
+  commandFn(input: Input, commandId: string): Promise<Value>;
+  onSuccess?(value: Value, input: Input): void | Promise<void>;
+}
+
+/**
+ * Retains a command ID after an unknown transport outcome so a retry replays the
+ * same durable command. Definitive HTTP failures and successes settle the ID.
+ */
+export function useCommandMutation<Input, Value>(
+  options: CommandMutationOptions<Input, Value>,
+): UseMutationResult<Input, Value> {
+  const commandIds = useRef<CommandIdStore | null>(null);
+  commandIds.current ??= new CommandIdStore();
+  return useMutation({
+    mutationFn: async (input: Input) => {
+      const commandId = commandIds.current!.get(input);
+      try {
+        const value = await options.commandFn(input, commandId);
+        commandIds.current!.settle(input);
+        return value;
+      } catch (cause) {
+        if (isDefinitiveCommandFailure(cause)) commandIds.current!.settle(input);
+        throw cause;
+      }
+    },
+    onSuccess: options.onSuccess,
+  });
 }

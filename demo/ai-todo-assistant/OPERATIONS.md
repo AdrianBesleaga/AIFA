@@ -14,7 +14,19 @@ Probe `/health` for API liveness. Alert on Mongo connection failures, outbox doc
 
 ## Security and privacy
 
-Production callers must provide a signed OIDC bearer token. The API verifies its issuer, audience, and signature using `OIDC_ISSUER_URL`, `OIDC_AUDIENCE`, and `OIDC_JWKS_URL`; it reads `sub`, `tenant_id`, and space-separated `scope` claims. The `x-aifa-*` headers are accepted only outside production. Set the short-lived `MCP_ACCESS_TOKEN` secret for the local stdio MCP bridge. Treat Ollama prompts and responses as tenant data; run local Ollama on trusted infrastructure and do not enable a remote model provider without a data-processing review.
+Production callers must provide a signed OIDC bearer token. The API verifies its issuer, audience,
+and signature using `OIDC_ISSUER_URL`, `OIDC_AUDIENCE`, and `OIDC_JWKS_URL`; it reads `sub`,
+`tenant_id`, and space-separated `scope` claims. Configure the browser authorization request with
+`VITE_OIDC_SCOPES`; it must include the application scopes required by the enabled features and
+`EventRead` for live updates. The `x-aifa-*` headers are accepted only outside production. Set the
+short-lived `MCP_ACCESS_TOKEN` secret for the local stdio MCP bridge. Treat Ollama prompts and
+responses as tenant data; run local Ollama on trusted infrastructure and do not enable a remote
+model provider without a data-processing review.
+
+The browser consumes `/api/events` using authenticated fetch streaming. The endpoint requires
+`EventRead`, derives the tenant from the verified actor, and resumes from an opaque cursor carried
+in `Last-Event-ID`. Preserve the tenant event-stream index and outbox retention window long enough
+for the expected reconnect interval.
 
 ## Incident response
 

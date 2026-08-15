@@ -1,3 +1,5 @@
+import { PermissionScope } from "../../shared/architecture-enums.js";
+
 interface OidcMetadata {
   authorization_endpoint: string;
   token_endpoint: string;
@@ -12,6 +14,9 @@ function configuration() {
     issuer: import.meta.env.VITE_OIDC_ISSUER_URL as string | undefined,
     clientId: import.meta.env.VITE_OIDC_CLIENT_ID as string | undefined,
     audience: import.meta.env.VITE_OIDC_AUDIENCE as string | undefined,
+    scopes:
+      (import.meta.env.VITE_OIDC_SCOPES as string | undefined) ??
+      Object.values(PermissionScope).join(" "),
     redirectUri:
       (import.meta.env.VITE_OIDC_REDIRECT_URI as string | undefined) ??
       `${window.location.origin}${window.location.pathname}`,
@@ -65,7 +70,7 @@ export async function beginSignIn(): Promise<void> {
     client_id: config.clientId,
     redirect_uri: config.redirectUri,
     response_type: "code",
-    scope: "openid profile offline_access",
+    scope: `openid profile ${config.scopes}`,
     state,
     code_challenge: await sha256Base64Url(verifier),
     code_challenge_method: "S256",

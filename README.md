@@ -205,7 +205,8 @@ AIFA relies on executable guardrails, not documentation alone:
 - transactional idempotency, audit records, and an event outbox;
 - architecture, behavior, integration, and bundle checks.
 
-The current feature set covers task creation, listing, status changes, deletion, AI-generated task plans, and AI workspace settings.
+The current feature set covers task creation, listing, status changes, deletion, AI-generated task
+plans, explicit suggestion acceptance, and AI workspace settings.
 
 ## Repository map
 

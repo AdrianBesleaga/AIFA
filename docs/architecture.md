@@ -116,7 +116,7 @@ A Create Task contribution does not import the task list or tell it to refresh. 
 ```text
 core                    → core only
 context domain          → core + its own domain
-feature                 → core + itself + own domain + versioned contracts
+feature                 → core shared/frontend APIs + itself + own domain + versioned contracts
 HTTP / MCP / UI adapter → core + its registered feature contract
 cross-context work      → versioned contracts or domain events
 ```

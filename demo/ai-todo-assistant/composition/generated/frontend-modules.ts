@@ -7,6 +7,12 @@ export const frontendModules = [
     load: () => import("../../contexts/ai-planning/features/generate-task-plan/frontend/contribution.js"),
   },
   {
+    id: "accept-task-suggestion",
+    slots: ["TaskSuggestionActions"] as const,
+    eventConsumers: [{"name":"invalidate-task-collection-after-suggestion-acceptance","eventType":"TaskCreatedV1","contract":"task-management/contracts/events/v1/task-created.schema.json"}] as const,
+    load: () => import("../../contexts/task-management/features/accept-task-suggestion/frontend/contribution.js"),
+  },
+  {
     id: "change-task-status",
     slots: ["TaskRowActions"] as const,
     eventConsumers: [{"name":"invalidate-task-collection-after-status-change","eventType":"TaskStatusChangedV1","contract":"task-management/contracts/events/v1/task-status-changed.schema.json"}] as const,

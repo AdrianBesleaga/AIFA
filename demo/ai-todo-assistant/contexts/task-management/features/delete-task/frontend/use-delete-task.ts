@@ -1,18 +1,20 @@
-import { api } from "../../../../../core/frontend/api.js";
-import { useMutation, useQueryClient } from "../../../../../core/frontend/query/react-query.js";
+import { commandApi } from "../../../../../core/frontend/api.js";
+import { useCommandMutation, useQueryClient } from "../../../../../core/frontend/query/react-query.js";
 import type { TaskViewV1 } from "../../../../../core/shared/generated/contracts.js";
+import { HttpMethod } from "../../../../../core/shared/architecture-enums.js";
 import { TaskCacheTag } from "../../../contracts/v1/task-cache.js";
 
 export function useDeleteTask() {
   const queryClient = useQueryClient();
-  return useMutation<TaskViewV1, true>({
-    mutationFn: async (task) =>
+  return useCommandMutation<TaskViewV1, true>({
+    commandFn: async (task, commandId) =>
       (
-        await api<{ deleted: true }>(`/api/tasks/${task.id}`, {
-          method: "DELETE",
-          headers: { "idempotency-key": crypto.randomUUID() },
-          body: JSON.stringify({ expectedVersion: task.version, confirmed: true }),
-        })
+        await commandApi<{ deleted: true }>(
+          `/api/tasks/${task.id}`,
+          commandId,
+          { expectedVersion: task.version, confirmed: true },
+          HttpMethod.Delete,
+        )
       ).deleted,
     onSuccess: () => queryClient.invalidateTags([TaskCacheTag.Collection]),
   });
