@@ -21,7 +21,7 @@
     "test:integration": "tsx --test tests/mongo.integration.test.ts",
     "test:smoke": "node tests/built-server.smoke.mjs",
     "check:bundle": "node core/architecture/check-bundle-size.mjs",
-    "check": "npm run validate:architecture && npm run generate:contracts && npm run check:imports && tsc --noEmit"
+    "check": "npm run generate:contracts && npm run validate:architecture && npm run check:imports && tsc --noEmit"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
